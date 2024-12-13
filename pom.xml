@@ -12,13 +12,61 @@
     <artifactId>y9-code-generator</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
+    <description>RiseSoft/CodeGenerator parent pom.xml file</description>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License (GPL) version 3.0</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
+        <gitee.url>https://gitee.com/risesoft-y9/y9-code-generator</gitee.url>
+        <gitee.connection>scm:git:https://gitee.com/risesoft-y9/y9-code-generator.git</gitee.connection>
+        <gitee.developerConnection>scm:git:https://gitee.com/risesoft-y9/y9-code-generator.git</gitee.developerConnection>
+
         <revision>v9.6.8-SNAPSHOT</revision>
     </properties>
+
+    <scm>
+        <url>${gitee.url}</url>
+        <connection>${gitee.connection}</connection>
+        <developerConnection>${gitee.developerConnection}</developerConnection>
+    </scm>
 
     <modules>
         <module>risenet-y9boot-webapp-code</module>
     </modules>
+
+    <repositories>
+        <repository>
+            <id>y9-internet-repo</id>
+            <url>https://svn.youshengyun.com:9900/nexus/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <!-- <updatePolicy>always</updatePolicy> -->
+                <!-- always,daily(default),interval:XXX,never -->
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <profiles>
+        <profile>
+            <id>deploy-maven-central</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

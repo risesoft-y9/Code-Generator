@@ -36,6 +36,8 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElTag: typeof import('element-plus/es')['ElTag']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     FieldForm: typeof import('./src/components/dialog/fieldForm.vue')['default']
     FixedTreeModule: typeof import('./src/components/pageModule/fixedTreeModule.vue')['default']
     IndexForm: typeof import('./src/components/dialog/indexForm.vue')['default']

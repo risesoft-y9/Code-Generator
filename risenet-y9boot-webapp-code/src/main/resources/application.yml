@@ -49,7 +49,7 @@ spring:
         druid:
             y9-public:
                 driver-class-name: com.mysql.cj.jdbc.Driver
-                url: jdbc:mysql://192.168.3.31:3306/y9_public?serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&useUnicode=true&characterEncoding=utf-8&rewriteBatchedStatements=true&useCompression=true&useSSL=false&allowPublicKeyRetrieval=true
+                url: jdbc:mysql://localhost:3306/y9_public?serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&useUnicode=true&characterEncoding=utf-8&rewriteBatchedStatements=true&useCompression=true&useSSL=false&allowPublicKeyRetrieval=true
                 username: root
                 #driver-class-name: oracle.jdbc.OracleDriver
                 #url: jdbc:oracle:thin:@127.0.0.1:1521:orcl
@@ -122,25 +122,25 @@ y9:
             systemName: code
     service:
         org:
-            directUrl: http://test-api-internal.youshengyun.com
+            directUrl: http://localhost:8080/org
     common:
         cacheEnabled: true
         kafkaEnabled: true
-        orgBaseUrl: http://test-api-internal.youshengyun.com/platform
-        y9DigitalBaseUrl: http://test-api-internal.youshengyun.com/y9DigitalBase
-        userOnlineBaseUrl: http://test-api-internal.youshengyun.com/userOnline
-        logBaseUrl: http://test-api-internal.youshengyun.com/log
+        orgBaseUrl: http://localhost:8080/platform
+        y9DigitalBaseUrl: http://localhost:8080/y9DigitalBase
+        userOnlineBaseUrl: http://localhost:8080/userOnline
+        logBaseUrl: http://localhost:8080/log
     feature:
         file:
             rest:
-                fileManagerUrl: http://test-api-internal.youshengyun.com/fileManager
+                fileManagerUrl: http://localhost:8080/fileManager
             base64FileName: false
             encryptionFileContent: false
             ftp:
-                host: 192.168.3.31
+                host: localhost
                 port: 21
-                username: y9admin
-                password: '83204585'
+                username: user
+                password: password
                 blockWhenExhausted: true
                 bufferSize: 10240
                 connectTimeOut: 50000
@@ -205,6 +205,6 @@ y9:
                     #- 客户端密钥,由认证服务提供商分配
                     client-secret: secret
                     #- 认证服务器验证访问令牌有效性的路径
-                    introspection-uri: https://test.youshengyun.com/sso/oauth2.0/introspect
+                    introspection-uri: http://localhost:7055/sso/oauth2.0/introspect
                     #- 认证服务器获取用户信息路径
-                    profile-uri: https://test.youshengyun.com/sso/oauth2.0/profile
+                    profile-uri: http://localhost:7055/sso/oauth2.0/profile
