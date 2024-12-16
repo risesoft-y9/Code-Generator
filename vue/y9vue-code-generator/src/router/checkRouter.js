@@ -119,7 +119,7 @@ export const routerBeforeEach = async (to, from) => {
     }
     let path = to.path;
     let CHECK;
-    if (path == '/system' || path == '/localSystem') {
+    if (path == '/system' || path == '/localSystem' || path == '/localTemplate') {
         CHECK = await check();
     } else {
         CHECK = (await checkRole(['systemAdmin'])) ? true : false;

@@ -22,7 +22,7 @@ const frontFrameRouter = {
             component: () => import('@/views/frontFrame/frameDes/index.vue'),
             name: 'frameDes',
             meta: {
-                title: '前端框架模版',
+                title: '前端框架说明',
                 icon: 'ri-file-cloud-line',
                 environment: 2
             }
@@ -42,7 +42,7 @@ const frontFrameRouter = {
             redirect: '/frontFrame/classicLayout/org',
             name: 'classicLayout',
             meta: {
-                title: '数字底座经典布局',
+                title: '经典布局',
                 icon: 'ri-layout-2-line',
                 environment: 2
             },
@@ -141,153 +141,166 @@ const frontFrameRouter = {
             ]
         },
         {
-            path: '/frontFrame/y9Card',
-            component: () => import('@/views/frontFrame/y9Card/index.vue'),
-            name: 'y9Card',
+            path: '/frontFrame/universalComponent',
+            redirect: '/frontFrame/y9Card',
+            name: 'universalComponent',
             meta: {
-                title: 'Card 卡片',
-                icon: 'ri-hard-drive-2-line',
-                environment: 2
-            }
-        },
-        {
-            path: '/frontFrame/y9Dialog',
-            component: () => import('@/views/frontFrame/y9Dialog/index.vue'),
-            name: 'y9Dialog',
-            meta: {
-                title: 'Dialog 弹窗',
-                icon: 'ri-window-line',
-                environment: 2
-            }
-        },
-        {
-            path: '/frontFrame/y9Form',
-            component: () => import('@/views/frontFrame/y9Form/index.vue'),
-            name: 'y9Form',
-            meta: {
-                title: 'Form 表单',
-                icon: 'ri-profile-line',
-                environment: 2
-            }
-        },
-        {
-            path: '/frontFrame/y9Filter',
-            component: () => import('@/views/frontFrame/y9Filter/index.vue'),
-            name: 'y9Filter',
-            meta: {
-                title: 'Filter 过滤',
-                icon: 'ri-filter-line',
-                environment: 2
-            }
-        },
-        {
-            path: '/frontFrame/y9Pagination',
-            component: () => import('@/views/frontFrame/y9Pagination/index.vue'),
-            name: 'y9Pagination',
-            meta: {
-                title: 'Pagination 分页',
-                icon: 'ri-page-separator',
-                environment: 2
-            }
-        },
-        {
-            path: '/frontFrame/y9Table',
-            redirect: '/frontFrame/y9Table/install',
-            name: 'y9Table',
-            meta: {
-                title: '表格',
-                icon: 'ri-table-2',
+                title: '通用组件',
+                icon: 'ri-compass-line',
                 environment: 2
             },
             children: [
                 {
-                    path: '/frontFrame/y9Table/y9Table',
-                    component: () => import('@/views/frontFrame/y9Table/eltable.vue'),
-                    name: 'y9Table1',
+                    path: '/frontFrame/y9Card',
+                    component: () => import('@/views/frontFrame/y9Card/index.vue'),
+                    name: 'y9Card',
                     meta: {
-                        title: 'y9Table 表格',
-                        icon: 'ri-table-2'
+                        title: 'Card 卡片',
+                        icon: 'ri-hard-drive-2-line',
+                        environment: 2
                     }
                 },
                 {
-                    path: '/frontFrame/y9Table/y9VxeTable',
-                    component: () => import('@/views/frontFrame/y9Table/vxetable.vue'),
-                    name: 'y9VxeTable',
+                    path: '/frontFrame/y9Dialog',
+                    component: () => import('@/views/frontFrame/y9Dialog/index.vue'),
+                    name: 'y9Dialog',
                     meta: {
-                        title: 'y9VxeTable 表格',
-                        icon: 'ri-table-2'
+                        title: 'Dialog 弹窗',
+                        icon: 'ri-window-line',
+                        environment: 2
                     }
+                },
+                {
+                    path: '/frontFrame/y9Form',
+                    component: () => import('@/views/frontFrame/y9Form/index.vue'),
+                    name: 'y9Form',
+                    meta: {
+                        title: 'Form 表单',
+                        icon: 'ri-profile-line',
+                        environment: 2
+                    }
+                },
+                {
+                    path: '/frontFrame/y9Filter',
+                    component: () => import('@/views/frontFrame/y9Filter/index.vue'),
+                    name: 'y9Filter',
+                    meta: {
+                        title: 'Filter 过滤',
+                        icon: 'ri-filter-line',
+                        environment: 2
+                    }
+                },
+                {
+                    path: '/frontFrame/y9Pagination',
+                    component: () => import('@/views/frontFrame/y9Pagination/index.vue'),
+                    name: 'y9Pagination',
+                    meta: {
+                        title: 'Pagination 分页',
+                        icon: 'ri-page-separator',
+                        environment: 2
+                    }
+                },
+                {
+                    path: '/frontFrame/y9Table',
+                    redirect: '/frontFrame/y9Table/install',
+                    name: 'y9Table',
+                    meta: {
+                        title: '表格',
+                        icon: 'ri-table-2',
+                        environment: 2
+                    },
+                    children: [
+                        {
+                            path: '/frontFrame/y9Table/y9Table',
+                            component: () => import('@/views/frontFrame/y9Table/eltable.vue'),
+                            name: 'y9Table1',
+                            meta: {
+                                title: 'y9Table 表格',
+                                icon: 'ri-table-2'
+                            }
+                        },
+                        {
+                            path: '/frontFrame/y9Table/y9VxeTable',
+                            component: () => import('@/views/frontFrame/y9Table/vxetable.vue'),
+                            name: 'y9VxeTable',
+                            meta: {
+                                title: 'y9VxeTable 表格',
+                                icon: 'ri-table-2'
+                            }
+                        }
+                    ]
+                },
+
+                {
+                    path: '/frontFrame/y9List',
+                    component: () => import('@/views/frontFrame/y9List/index.vue'),
+                    name: 'y9List',
+                    meta: {
+                        title: 'List 列表',
+                        icon: 'ri-list-unordered',
+                        environment: 2
+                    }
+                },
+                {
+                    path: '/frontFrame/y9Tree',
+                    component: () => import('@/views/frontFrame/y9Tree/index.vue'),
+                    name: 'y9Tree',
+                    meta: {
+                        title: 'y9Tree 树',
+                        icon: 'ri-node-tree',
+                        environment: 2
+                    }
+                },
+                {
+                    path: '/frontFrame/viewer',
+                    component: () => import('@/views/frontFrame/v-viewer/index.vue'),
+                    name: 'viewer',
+                    meta: {
+                        title: 'v-viewer 图片预览插件',
+                        icon: 'ri-image-line',
+                        environment: 2
+                    }
+                },
+                {
+                    path: '/frontFrame/y9Upload',
+                    redirect: '/frontFrame/y9Upload/install',
+                    meta: {
+                        title: 'y9Upload 上传',
+                        icon: 'ri-folder-upload-line'
+                    },
+                    children: [
+                        {
+                            path: '/frontFrame/y9UploadOne',
+                            component: () => import('@/views/frontFrame/y9Upload/uploadOne.vue'),
+                            name: 'y9UploadOne',
+                            meta: {
+                                title: 'y9Upload 上传样式一',
+                                icon: 'ri-node-tree'
+                            }
+                        },
+                        {
+                            path: '/frontFrame/y9UploadTwo',
+                            component: () => import('@/views/frontFrame/y9Upload/uploadTwo.vue'),
+                            name: 'y9UploadTwo',
+                            meta: {
+                                title: 'y9Upload 上传样式二',
+                                icon: 'ri-node-tree'
+                            }
+                        },
+                        {
+                            path: '/frontFrame/y9Uploader',
+                            component: () => import('@/views/frontFrame/y9Upload/uploadThree.vue'),
+                            name: 'uploadThree',
+                            meta: {
+                                title: 'y9Upload 上传样式三',
+                                icon: 'ri-node-tree'
+                            }
+                        }
+                    ]
                 }
             ]
         },
 
-        {
-            path: '/frontFrame/y9List',
-            component: () => import('@/views/frontFrame/y9List/index.vue'),
-            name: 'y9List',
-            meta: {
-                title: 'List 列表',
-                icon: 'ri-list-unordered',
-                environment: 2
-            }
-        },
-        {
-            path: '/frontFrame/y9Tree',
-            component: () => import('@/views/frontFrame/y9Tree/index.vue'),
-            name: 'y9Tree',
-            meta: {
-                title: 'y9Tree 树',
-                icon: 'ri-node-tree',
-                environment: 2
-            }
-        },
-        {
-            path: '/frontFrame/viewer',
-            component: () => import('@/views/frontFrame/v-viewer/index.vue'),
-            name: 'viewer',
-            meta: {
-                title: 'v-viewer 图片预览插件',
-                icon: 'ri-image-line',
-                environment: 2
-            }
-        },
-        {
-            path: '/frontFrame/y9Upload',
-            redirect: '/frontFrame/y9Upload/install',
-            meta: {
-                title: 'y9Upload 上传',
-                icon: 'ri-folder-upload-line'
-            },
-            children: [
-                {
-                    path: '/frontFrame/y9UploadOne',
-                    component: () => import('@/views/frontFrame/y9Upload/uploadOne.vue'),
-                    name: 'y9UploadOne',
-                    meta: {
-                        title: 'y9Upload 上传样式一',
-                        icon: 'ri-node-tree'
-                    }
-                },
-                {
-                    path: '/frontFrame/y9UploadTwo',
-                    component: () => import('@/views/frontFrame/y9Upload/uploadTwo.vue'),
-                    name: 'y9UploadTwo',
-                    meta: {
-                        title: 'y9Upload 上传样式二',
-                        icon: 'ri-node-tree'
-                    }
-                },
-                {
-                    path: '/frontFrame/y9Uploader',
-                    component: () => import('@/views/frontFrame/y9Upload/uploadThree.vue'),
-                    name: 'uploadThree',
-                    meta: {
-                        title: 'y9Upload 上传样式三',
-                        icon: 'ri-node-tree'
-                    }
-                }
-            ]
-        }
     ]
 };
 export default frontFrameRouter;

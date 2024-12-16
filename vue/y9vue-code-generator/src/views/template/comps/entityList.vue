@@ -6,7 +6,6 @@
             @on-curr-page-change="onEntityCurrPageChange"
             @on-page-size-change="onEntityPageSizeChange"
             @on-change="handlerGetData"
-            v-model:selectedVal="selectedVal"
     >
         <template v-slot:bnts>
             <el-button
@@ -550,10 +549,9 @@ let entityTableConfig = ref({
         pageSize: 20, //每页显示条目个数，支持 v-model 双向绑定
         total: 0, //总条目数
     },
+    selectedVal: '',
     loading: false,
 });
-
-let selectedVal = ref('');
 
 const copyText = (val) =>{
   clipboard.copy(val);

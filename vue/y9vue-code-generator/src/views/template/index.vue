@@ -1,9 +1,3 @@
-<!--
- * @Author: mengjuhua
- * @Date: 2023-02-27 17:57:01
- * @LastEditors: qinman
- * @Description: 公司联系人
--->
 <template>
     <fixedTreeModule
             ref="fixedTreeRef"
@@ -21,20 +15,10 @@
                     class="global-btn-main"
                     type="primary"
                     @click="addSystem()"
+                    v-if="userInfo.globalManager"
             >
                 <i class="ri-add-line"></i>
-                <span> {{ $t('系统') }}</span>
-            </el-button>
-
-            <el-button
-                    class="global-btn-second"
-                    :size="fontSizeObj.buttonSize"
-                    :style="{ fontSize: fontSizeObj.baseFontSize }"
-                    type="primary"
-                    @click="addTemplate()"
-            >
-                <i class="ri-add-line"></i>
-                <span>{{ $t('模板') }}</span>
+                <span> {{ $t('添加模板') }}</span>
             </el-button>
 
         </template>
@@ -69,22 +53,6 @@
                                             </el-button>
                                         </span>
                                     </span>
-                            <span>
-
-                                        <el-button class="global-btn-second" :size="fontSizeObj.buttonSize"
-                                                   :style="{ fontSize: fontSizeObj.baseFontSize }"
-                                                   @click="handlerGenerate">
-                                            <i class="ri-file-upload-line"/>
-                                            {{ $t("生成代码") }}
-                                        </el-button>
-                                        <el-button class="global-btn-second" v-loading.fullscreen.lock="loading"
-                                                   :size="fontSizeObj.buttonSize"
-                                                   :style="{ fontSize: fontSizeObj.baseFontSize }"
-                                                   @click="handlerExport">
-                                            <i class="ri-download-2-line"></i>
-                                            {{ $t('下载') }}
-                                        </el-button>
-                                    </span>
                         </div>
 
                         <BaseInfo :id="currTreeNodeInfo.id" :editFlag="editBtnFlag" :saveClickFlag="saveBtnClick"
@@ -105,7 +73,7 @@
             </template>
         </template>
     </fixedTreeModule>
-  <!-- 增加系统 -->
+  <!-- 添加模板 -->
     <y9Dialog v-model:config="dialogConfig">
         <y9Form v-if="dialogConfig.type === 'addSystem'" ref="ruleRef" :config="formSystem"></y9Form>
         <y9Table v-if="dialogConfig.type === 'addTemplate'"
@@ -147,11 +115,14 @@ import {computed, h, inject, reactive, ref, toRefs, watch} from 'vue';
 import {ElNotification} from "element-plus";
 import {deleteSystem, getSystemList, saveSystem, saveSystemList} from "@/api/system";
 import {download, generateCode} from "@/api/export";
-import BaseInfo from "@/views/system/comps/baseInfo.vue";
-import Reminder from "@/views/system/comps/reminder.vue";
+import BaseInfo from "@/views/template/comps/baseInfo.vue";
+import Reminder from "@/views/template/comps/reminder.vue";
 import {nameValidator, tablePrefixValidator} from "@/utils/validate";
 import {getEntityAndField} from "@/api/entity";
+import y9_storage from '@/utils/storage';
 
+let userInfo = ref({});
+userInfo.value = y9_storage.getObjectItem('ssoUserInfo');
 const route = useRoute();
 const settingStore = useSettingStore();
 const {t} = useI18n();
@@ -183,7 +154,7 @@ const data = reactive({
         listData: [
             {
                 id: "addSystem",
-                name: computed(() => t("新增系统"))
+                name: computed(() => t("新增模板"))
             },
             {
                 id: "addTemplate",
@@ -218,14 +189,13 @@ async function addTemplate() {
 }
 
 const treeApiObj = ref({
-    topLevel: async () => {
+  topLevel: async () => {
         let data = []
 
         environment.value = route.meta.environment;
-
         let params = {
             environment: environment.value,
-            template: 0
+            template: 1
         }
         const res = await getSystemList(params);
         data = res.rows;
@@ -245,17 +215,6 @@ const treeApiObj = ref({
         return data
     },
 });
-
-async function handlerGenerate() {
-    const res = await generateCode(currTreeNodeInfo.value.id);
-    ElNotification({
-        title: res.success ? t('成功') : t('失败'),
-        message: res.success ? t('生成成功') : t('生成失败'),
-        type: res.success ? 'success' : 'error',
-        duration: 2000,
-        offset: 80,
-    });
-}
 
 let y9TableConfig = ref({
     headerBackground: true,
@@ -371,33 +330,6 @@ let y9TableExpandConfig = ref({
 })
 
 let selectedVal = ref([1]);
-
-async function handlerExport() {
-
-    const file = await download(currTreeNodeInfo.value.id);
-    if (file.size > 0) {
-        const blob = new Blob([file], {type: 'application/zip'});
-        const url = URL.createObjectURL(blob);
-        // 创建下载链接并模拟点击下载
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = currTreeNodeInfo.value.name + '.zip';
-        link.click();
-
-        // 释放URL对象
-        window.URL.revokeObjectURL(url);
-    } else {
-        ElNotification({
-            type: "warning",
-            title: "下载失败",
-            message: "未生成最新代码",
-            duration: 2000,
-            offset: 80,
-        })
-    }
-
-
-}
 
 async function handlerEditSave(data) {
     saveBtnLoading.value = true;

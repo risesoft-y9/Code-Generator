@@ -10,7 +10,7 @@
 import { routerBeforeEach } from '@/router/checkRouter';
 import NProgress from 'nprogress';
 import { createRouter, createWebHistory } from 'vue-router';
-import systemRouter from '@/router/modules/systemRouter';
+import localTemplateRouter from '@/router/modules/localTemplateRouter';
 import localSystemRouter from '@/router/modules/localSystemRouter';
 import frontFrameRouter from '@/router/modules/frontFrameRouter';
 //constantRoutes为不需要动态判断权限的路由，如登录、404、500等
@@ -42,7 +42,8 @@ export const constantRoutes: Array<any> = [
 //asyncRoutes需求动态判断权限并动态添加的页面  这里的路由模块顺序也是菜单显示的顺序（位置：src->router->modules）
 export const asyncRoutes = [
     frontFrameRouter,
-    localSystemRouter
+    localSystemRouter,
+    localTemplateRouter
 ];
 // 引入其他模块路由
 

@@ -149,7 +149,7 @@
                     options: [],
                     render: () => {
                         //text类型渲染的内容
-                        return h('span', t('本地化'));
+                        return h('span',  t('本地化'));
                     }
                 }
             },
@@ -205,7 +205,6 @@
             //根据environment值改变选项
             if (isEdit && item.prop == 'environment') {
                 item.props.options = [];
-
                 item.props.options.push({ label: '本地化', value: 1 });
             }
         });
