@@ -30,6 +30,7 @@
     "nprogress": "^0.2.0",
     "pinia": "^2.0.36",
     "progress": "^2.0.3",
+    "qrcode": "^1.5.4",
     "qs": "^6.11.2",
     "remixicon": "^2.5.0",
     "v-viewer": "^3.0.13",
