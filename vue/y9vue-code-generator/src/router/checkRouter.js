@@ -118,12 +118,7 @@ export const routerBeforeEach = async (to, from) => {
         return true;
     }
     let path = to.path;
-    let CHECK;
-    if (path == '/system' || path == '/localSystem' || path == '/localTemplate') {
-        CHECK = await check();
-    } else {
-        CHECK = (await checkRole(['systemAdmin'])) ? true : false;
-    }
+    let CHECK = await check();
     if (CHECK) {
         if (!to.name) {
             let array = await router.getRoutes();
