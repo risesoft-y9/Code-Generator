@@ -191,10 +191,6 @@ y9:
                     - meta
         oauth2:
             resource:
-                #- 是否保存用户操作日志
-                saveLogMessage: false
-                #- 是否保存用户在线信息
-                saveOnlineMessage: false
                 allowBasicAuthentication: true
                 allowFormEncodedBodyParameter: true
                 allowUriQueryParameter: true
