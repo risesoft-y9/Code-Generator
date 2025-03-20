@@ -198,10 +198,10 @@ y9:
                 protectedUrlPatterns: /vue/*
                 opaque:
                     #- 客户端唯一标示,由认证服务提供商分配
-                    client-id: clientid
+                    client-id: clientid_oidc
                     #- 客户端密钥,由认证服务提供商分配
-                    client-secret: secret
+                    client-secret: secret_oidc
                     #- 认证服务器验证访问令牌有效性的路径
-                    introspection-uri: http://localhost:7055/sso/oauth2.0/introspect
+                    introspection-uri: http://localhost:7055/sso/oidc/introspect
                     #- 认证服务器获取用户信息路径
-                    profile-uri: http://localhost:7055/sso/oauth2.0/profile
+                    profile-uri: http://localhost:7055/sso/oidc/profile
