@@ -6,7 +6,7 @@
     <parent>
         <groupId>net.risesoft</groupId>
         <artifactId>y9-digitalbase</artifactId>
-        <version>v9.6.8</version>
+        <version>v9.6.9-SNAPSHOT</version>
         <relativePath/>
     </parent>
     <artifactId>y9-code-generator</artifactId>
@@ -25,9 +25,10 @@
     <properties>
         <gitee.url>https://gitee.com/risesoft-y9/y9-code-generator</gitee.url>
         <gitee.connection>scm:git:https://gitee.com/risesoft-y9/y9-code-generator.git</gitee.connection>
-        <gitee.developerConnection>scm:git:https://gitee.com/risesoft-y9/y9-code-generator.git</gitee.developerConnection>
+        <gitee.developerConnection>scm:git:https://gitee.com/risesoft-y9/y9-code-generator.git
+        </gitee.developerConnection>
 
-        <revision>v9.6.8</revision>
+        <revision>v9.6.9-SNAPSHOT</revision>
     </properties>
 
     <scm>
