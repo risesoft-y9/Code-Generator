@@ -38,7 +38,7 @@
     </scm>
 
     <modules>
-        <module>risenet-y9boot-webapp-code</module>
+        <module>risenet-y9boot-server-code</module>
     </modules>
 
     <repositories>

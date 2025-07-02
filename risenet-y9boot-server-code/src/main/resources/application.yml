@@ -17,7 +17,7 @@ server:
             force: true
         session:
             tracking-modes: COOKIE
-        context-path: /code
+        context-path: /server-code
 spring:
     application:
         name: code
@@ -120,13 +120,13 @@ y9:
             systemName: code
     service:
         org:
-            directUrl: http://localhost:7055/org
+            directUrl: http://localhost:7055
     common:
         cacheEnabled: true
         kafkaEnabled: true
-        orgBaseUrl: http://localhost:7055/platform
-        userOnlineBaseUrl: http://localhost:7055/userOnline
-        logBaseUrl: http://localhost:7055/log
+        orgBaseUrl: http://localhost:7055/server-platform
+        userOnlineBaseUrl: http://localhost:7055/server-useronline
+        logBaseUrl: http://localhost:7055/server-log
     feature:
         file:
             rest:
