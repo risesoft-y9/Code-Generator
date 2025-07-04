@@ -24,7 +24,8 @@ rebel.xml
 .svn/
 
 # vue
-kernel-standard/
+y9vue-code/
 node_modules/
+package-lock.json
 
 .flattened-pom.xml
