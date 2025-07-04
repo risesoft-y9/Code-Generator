@@ -12,7 +12,7 @@ function y9Request(baseUrl = '') {
     let requestList = new Set();
 
     const service = axios.create({
-        baseURL: import.meta.env.VUE_APP_HOST,
+        baseURL: import.meta.env.VUE_APP_CONTEXT,
         withCredentials: true,
         timeout: 0
     });

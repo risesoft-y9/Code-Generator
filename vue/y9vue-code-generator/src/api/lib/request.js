@@ -10,8 +10,8 @@ import settings from '@/settings';
 import y9_storage from '@/utils/storage';
 import axios from 'axios'; // 考虑CDN
 import i18n from '@/language/index';
-import {isExternal} from '@/utils/validate.ts';
-import {$y9_SSO} from '@/main';
+import { isExternal } from '@/utils/validate.ts';
+import { $y9_SSO } from '@/main';
 
 const { t } = i18n.global;
 
@@ -20,7 +20,7 @@ function y9Request(baseUrl = '') {
     let requestList = new Set();
 
     const service = axios.create({
-        baseURL: import.meta.env.VUE_APP_HOST,
+        baseURL: import.meta.env.VUE_APP_CONTEXT,
         withCredentials: true,
         timeout: 0
     });

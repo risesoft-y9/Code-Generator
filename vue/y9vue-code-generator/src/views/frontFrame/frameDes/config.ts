@@ -186,7 +186,7 @@ export default () => {
                         { content: '# markdown 文件路径' },
                         { content: "VUE_APP_MD_PATH = '/y9vue-code/public/'" },
                         { content: '# 后端api接口域名' },
-                        { content: "VUE_APP_HOST = 'http://localhost:8080/code'" },
+                        { content: "VUE_APP_CONTEXT = 'http://localhost:8080/server-code'" },
                         { content: '# index页面，配一个首页' },
                         { content: "VUE_APP_HOST_INDEX = 'http://localhost:8081/y9vue-code/'" },
                         { content: '# sso接口主域名' },
