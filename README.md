@@ -3,12 +3,11 @@
 </p>
 <p align="center">基于SpringBoot+Vue前后端分离的代码生成器</p>
 <p align="center">
- <a href='https://gitee.com/risesoft-y9/y9-core/stargazers'><img src='https://gitee.com/risesoft-y9/y9-core/badge/star.svg?theme=dark' alt='star'></img></a>
-    <img src="https://img.shields.io/badge/version-v9.6.9-yellow.svg">
+<a href='https://gitee.com/risesoft-y9/y9-code-generator/stargazers'><img src='https://gitee.com/risesoft-y9/y9-code-generator/badge/star.svg?theme=dark' alt='star'></img></a>    <img src="https://img.shields.io/badge/version-v9.6.9-yellow.svg">
     <img src="https://img.shields.io/badge/Spring%20Boot-2.7-blue.svg">
     <img alt="logo" src="https://img.shields.io/badge/Vue-3.3-red.svg">
     <img alt="" src="https://img.shields.io/badge/JDK-11-green.svg">
-    <a href="https://gitee.com/risesoft-y9/y9-core/blob/master/LICENSE">
+    <a href="https://gitee.com/risesoft-y9/y9-code-generator/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-GPL3-blue.svg"></a>
     <img src="https://img.shields.io/badge/total%20lines-810.2k-blue.svg">
 </p>
