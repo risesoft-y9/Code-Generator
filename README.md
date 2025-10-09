@@ -8,7 +8,7 @@
     <img alt="logo" src="https://img.shields.io/badge/Vue-3.3-red.svg">
     <img alt="" src="https://img.shields.io/badge/JDK-11-green.svg">
     <img src="https://img.shields.io/badge/license-GPL3-blue.svg">
-    <img src="https://img.shields.io/badge/total%20lines-810.2k-blue.svg">
+    <img src="https://img.shields.io/badge/total%20lines-60.4k-blue.svg">
 </p>
 
 ## 简介
