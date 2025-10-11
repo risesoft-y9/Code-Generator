@@ -134,10 +134,11 @@ y9:
             base64FileName: false
             encryptionFileContent: false
             ftp:
+                enabled: true
                 host: localhost
                 port: 21
-                username: admin
-                password: 111111
+                username: y9admin
+                password: '111111'
                 blockWhenExhausted: true
                 bufferSize: 10240
                 connectTimeOut: 50000
@@ -154,6 +155,10 @@ y9:
                 testWhileIdle: true
                 useEPSVwithIPv4: false
                 passiveMode: true
+            local:
+                enabled: false
+                # 本地文件存储的根路径，按需设置为自己的
+                basePath: "d:/y9FileStore"
         jpa:
             packagesToScanEntityPublic: net.risesoft.y9public.entity
             packagesToScanEntityTenant: net.risesoft.entity
