@@ -1,24 +1,24 @@
 package net.risesoft.y9public.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
+
 import net.risesoft.id.IdType;
 import net.risesoft.id.Y9IdGenerator;
-import net.risesoft.pojo.Y9Result;
 import net.risesoft.y9.exception.Y9BusinessException;
 import net.risesoft.y9.util.Y9BeanUtil;
 import net.risesoft.y9public.entity.vo.Y9CodeIndex;
 import net.risesoft.y9public.repository.Y9CodeFieldRepository;
 import net.risesoft.y9public.repository.Y9CodeIndexRepository;
 import net.risesoft.y9public.service.Y9CodeIndexService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 
 @Service
 @RequiredArgsConstructor
@@ -36,12 +36,12 @@ public class Y9CodeIndexServiceImpl implements Y9CodeIndexService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS,readOnly = false,rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = false, rollbackFor = Exception.class)
     public Y9CodeIndex saveOrUpdate(Y9CodeIndex y9CodeIndex) {
 
         boolean success = validateFieldIds(y9CodeIndex.getCodeEntityId(), y9CodeIndex.getIndexFields());
         if (!success) {
-            throw new Y9BusinessException(500,"字段信息有误");
+            throw new Y9BusinessException(500, "字段信息有误");
         }
 
         String id = y9CodeIndex.getId();
@@ -58,7 +58,7 @@ public class Y9CodeIndexServiceImpl implements Y9CodeIndexService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS,readOnly = false,rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = false, rollbackFor = Exception.class)
     public List<Y9CodeIndex> saveIndexList(List<Y9CodeIndex> y9CodeIndexList) {
         y9CodeIndexList = y9CodeIndexList.stream().peek(item -> {
             if (StringUtils.isBlank(item.getId())) {
@@ -75,22 +75,22 @@ public class Y9CodeIndexServiceImpl implements Y9CodeIndexService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS,readOnly = false,rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = false, rollbackFor = Exception.class)
     public Boolean deleteById(String id) {
         codeIndexRepository.deleteById(id);
         return true;
     }
 
-    public boolean validateFieldIds(String codeEntityId,String indexFields){
+    public boolean validateFieldIds(String codeEntityId, String indexFields) {
         String[] fieldIds = indexFields.split(",");
         for (String fieldId : fieldIds) {
             Integer isExist = codeFieldRepository.countByCodeEntityIdAndAndId(codeEntityId, fieldId);
-            if (isExist < 1){
-                //error
+            if (isExist < 1) {
+                // error
                 return false;
             }
         }
-        //success
+        // success
         return true;
     }
 }
