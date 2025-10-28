@@ -1,6 +1,11 @@
 package net.risesoft.y9public.util;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -12,9 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.risesoft.y9public.entity.Y9CodeEntity;
 import net.risesoft.y9public.entity.Y9CodeField;
 import net.risesoft.y9public.entity.Y9CodeSystem;
+import net.risesoft.y9public.entity.vo.Y9CodeIndex;
 
 import freemarker.template.Template;
-import net.risesoft.y9public.entity.vo.Y9CodeIndex;
 
 /**
  * 代码生成工具
@@ -95,8 +100,8 @@ public class CodeGenerateUtils {
         generateFileByTemplate(templateNameIndexRouter, mapperFileIndexRouter, map);
     }
 
-    public static void generateEntity(Y9CodeSystem codeSystem, Y9CodeEntity codeEntity,  List<Y9CodeField> codeFieldList,List<Y9CodeIndex> codeIndexList,
-                                      String projectPath) {
+    public static void generateEntity(Y9CodeSystem codeSystem, Y9CodeEntity codeEntity, List<Y9CodeField> codeFieldList,
+        List<Y9CodeIndex> codeIndexList, String projectPath) {
         final String pathEntity =
             projectPath + "/src/main/java/net/risesoft" + (codeEntity.getTenanted() ? "" : "/y9public") + "/entity/";
         createFileIfNotExits(pathEntity);
@@ -140,7 +145,7 @@ public class CodeGenerateUtils {
         map.put("codeSystem", codeSystem);
         map.put("codeEntity", codeEntity);
         map.put("codeFieldList", codeFieldList);
-        map.put("codeIndexList",codeIndexList);
+        map.put("codeIndexList", codeIndexList);
         generateFileByTemplate(ftlNameEntity, mapperFileEntity, map);
         generateFileByTemplate(ftlNameRepository, mapperFileRepository, map);
         generateFileByTemplate(ftlNameSpecification, mapperFileSpecification, map);
@@ -150,7 +155,7 @@ public class CodeGenerateUtils {
     }
 
     public static void generateEntityOnly(Y9CodeSystem codeSystem, Y9CodeEntity codeEntity,
-        List<Y9CodeField> codeFieldList,List<Y9CodeIndex> codeIndexList, String uploadPath) {
+        List<Y9CodeField> codeFieldList, List<Y9CodeIndex> codeIndexList, String uploadPath) {
         String name = toUpperCaseFirstOne(codeEntity.getName());
         final String classNameEntity = name + ".java";
         final String classNameRepository = name + "Repository.java";
@@ -183,7 +188,7 @@ public class CodeGenerateUtils {
         map.put("codeSystem", codeSystem);
         map.put("codeEntity", codeEntity);
         map.put("codeFieldList", codeFieldList);
-        map.put("codeIndexList",codeIndexList);
+        map.put("codeIndexList", codeIndexList);
 
         generateFileByTemplate(ftlNameEntity, mapperFileEntity, map);
         generateFileByTemplate(ftlNameRepository, mapperFileRepository, map);
@@ -195,8 +200,8 @@ public class CodeGenerateUtils {
         generateFileByTemplate(ftlNameVue, mapperFileVue, map);
     }
 
-    public static Map<String,String> generateEntityOnlyString(Y9CodeSystem codeSystem, Y9CodeEntity codeEntity,
-                                          List<Y9CodeField> codeFieldList,List<Y9CodeIndex> codeIndexList) {
+    public static Map<String, String> generateEntityOnlyString(Y9CodeSystem codeSystem, Y9CodeEntity codeEntity,
+        List<Y9CodeField> codeFieldList, List<Y9CodeIndex> codeIndexList) {
         String name = toUpperCaseFirstOne(codeEntity.getName());
         final String classNameEntity = name + ".java";
         final String classNameRepository = name + "Repository.java";
@@ -220,11 +225,11 @@ public class CodeGenerateUtils {
         map.put("codeSystem", codeSystem);
         map.put("codeEntity", codeEntity);
         map.put("codeFieldList", codeFieldList);
-        map.put("codeIndexList",codeIndexList);
+        map.put("codeIndexList", codeIndexList);
 
         HashMap<String, String> resultMap = new LinkedHashMap<>();
-        resultMap.put(classNameEntity,generateStringByTemplate(ftlNameEntity, map));
-        resultMap.put(classNameRepository,generateStringByTemplate(ftlNameRepository, map));
+        resultMap.put(classNameEntity, generateStringByTemplate(ftlNameEntity, map));
+        resultMap.put(classNameRepository, generateStringByTemplate(ftlNameRepository, map));
         resultMap.put(classNameSpecification, generateStringByTemplate(ftlNameSpecification, map));
         resultMap.put(classNameService, generateStringByTemplate(ftlNameService, map));
         resultMap.put(classNameServiceImpl, generateStringByTemplate(ftlNameServiceImpl, map));
@@ -271,8 +276,9 @@ public class CodeGenerateUtils {
             LOGGER.error("生成模板:{}失败！错误信息: {}", templateName, e.getMessage());
         }
     }
+
     private static String generateStringByTemplate(final String templateName, Map<String, Object> map) {
-        try(StringWriter stringWriter = new StringWriter()) {
+        try (StringWriter stringWriter = new StringWriter()) {
             Template template = FreeMarkerTemplateUtils.getTemplate(templateName);
             template.process(map, stringWriter);
             return stringWriter.toString();
@@ -287,7 +293,7 @@ public class CodeGenerateUtils {
         if (Character.isLowerCase(s.charAt(0))) {
             return s;
         } else {
-            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+            return Character.toLowerCase(s.charAt(0)) + s.substring(1);
         }
     }
 
@@ -296,7 +302,7 @@ public class CodeGenerateUtils {
         if (Character.isUpperCase(s.charAt(0))) {
             return s;
         } else {
-            return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+            return Character.toUpperCase(s.charAt(0)) + s.substring(1);
         }
     }
 }

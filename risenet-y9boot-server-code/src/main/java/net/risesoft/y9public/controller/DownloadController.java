@@ -34,7 +34,7 @@ public class DownloadController {
         String fileStoreId = codeSystem.getFileStoreId();
 
         downloadAndResponse(response, fileStoreId);
-    };
+    }
 
     @GetMapping("entity")
     public void downloadEntity(@RequestParam String codeEntityId, HttpServletResponse response) {

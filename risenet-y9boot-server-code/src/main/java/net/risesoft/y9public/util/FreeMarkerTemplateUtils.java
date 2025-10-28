@@ -20,6 +20,8 @@ public class FreeMarkerTemplateUtils {
         CONFIGURATION.setCacheStorage(NullCacheStorage.INSTANCE);
     }
 
+    private FreeMarkerTemplateUtils() {}
+
     public static void clearCache() {
         CONFIGURATION.clearTemplateCache();
     }
@@ -27,6 +29,4 @@ public class FreeMarkerTemplateUtils {
     public static Template getTemplate(String templateName) throws IOException {
         return CONFIGURATION.getTemplate(templateName);
     }
-
-    private FreeMarkerTemplateUtils() {}
 }

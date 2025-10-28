@@ -12,29 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 public class DeleteFileUtil {
 
     /**
-     * 删除文件，可以是文件或文件夹
-     *
-     */
-    @Async
-    public void delete(String filePath) {
-        try {
-            Thread.sleep(3600000);
-        } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage());
-        }
-        File file = new File(filePath);
-        if (!file.exists()) {
-            LOGGER.info("删除文件失败:{}不存在！", filePath);
-        } else {
-            if (file.isFile()) {
-                deleteFile(filePath);
-            } else {
-                deleteDirectory(filePath);
-            }
-        }
-    }
-
-    /**
      * 删除目录及目录下的文件
      *
      */
@@ -98,6 +75,29 @@ public class DeleteFileUtil {
         } else {
             LOGGER.info("删除单个文件失败：{}不存在！", filePath);
             return false;
+        }
+    }
+
+    /**
+     * 删除文件，可以是文件或文件夹
+     *
+     */
+    @Async
+    public void delete(String filePath) {
+        try {
+            Thread.sleep(3600000);
+        } catch (InterruptedException e) {
+            LOGGER.error(e.getMessage());
+        }
+        File file = new File(filePath);
+        if (!file.exists()) {
+            LOGGER.info("删除文件失败:{}不存在！", filePath);
+        } else {
+            if (file.isFile()) {
+                deleteFile(filePath);
+            } else {
+                deleteDirectory(filePath);
+            }
         }
     }
 

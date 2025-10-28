@@ -2,14 +2,16 @@ package net.risesoft.y9public.controller;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.risesoft.y9public.entity.vo.Y9CodeIndex;
-import net.risesoft.y9public.service.*;
-import net.risesoft.y9public.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,17 @@ import net.risesoft.y9public.entity.Y9CodeEntity;
 import net.risesoft.y9public.entity.Y9CodeField;
 import net.risesoft.y9public.entity.Y9CodeSystem;
 import net.risesoft.y9public.entity.Y9FileStore;
+import net.risesoft.y9public.entity.vo.Y9CodeIndex;
+import net.risesoft.y9public.service.Y9CodeEntityService;
+import net.risesoft.y9public.service.Y9CodeFieldService;
+import net.risesoft.y9public.service.Y9CodeIndexService;
+import net.risesoft.y9public.service.Y9CodeSystemService;
+import net.risesoft.y9public.service.Y9FileStoreService;
+import net.risesoft.y9public.util.CodeGenerateUtils;
+import net.risesoft.y9public.util.CodeUtil;
+import net.risesoft.y9public.util.CopyFilesUtil;
+import net.risesoft.y9public.util.DeleteFileUtil;
+import net.risesoft.y9public.util.ZipFilesUtil;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,6 +53,14 @@ public class CodeController {
     private final Y9FileStoreService y9FileStoreService;
     private final DeleteFileUtil deleteFileUtil;
     private final Y9CodeIndexService y9CodeIndexService;
+
+    /** 文件不存在时创建该文件 */
+    private static void createFileIfNotExists(String path) {
+        File f = new File(path);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+    }
 
     @PostMapping(value = "/system")
     public Y9Result<Object> system(@RequestParam String codeSystemId, HttpServletRequest request) {
@@ -118,7 +139,7 @@ public class CodeController {
                 item.setIndexFieldList(String.join(",", indexFieldList));
             }).collect(Collectors.toList());
 
-            CodeGenerateUtils.generateEntityOnly(codeSystem, codeEntity, codeFieldList,codeIndexList, uploadPath);
+            CodeGenerateUtils.generateEntityOnly(codeSystem, codeEntity, codeFieldList, codeIndexList, uploadPath);
             /** 打包zip */
             File from = new File(uploadPath);
             zipPath = request.getSession().getServletContext().getRealPath("/") + "static/zip/"
@@ -144,7 +165,7 @@ public class CodeController {
     }
 
     @PostMapping(value = "/entityPreview")
-    public Y9Result<Map<String,String>> entityPreview(@RequestParam String codeEntityId) {
+    public Y9Result<Map<String, String>> entityPreview(@RequestParam String codeEntityId) {
         try {
             Y9CodeEntity codeEntity = y9CodeEntityService.findById(codeEntityId);
             Y9CodeSystem codeSystem = y9CodeSystemService.findById(codeEntity.getCodeSystemId());
@@ -162,26 +183,20 @@ public class CodeController {
                 item.setIndexFieldList(String.join(",", indexFieldList));
             }).collect(Collectors.toList());
 
-            Map<String, String> resultMap = CodeGenerateUtils.generateEntityOnlyString(codeSystem, codeEntity, codeFieldList,codeIndexList);
-            List<String> titleList = Arrays.asList("Entity","Repository","Specification","Service","ServiceImpl","Controller","Index.ts","Index.vue");
+            Map<String, String> resultMap =
+                CodeGenerateUtils.generateEntityOnlyString(codeSystem, codeEntity, codeFieldList, codeIndexList);
+            List<String> titleList = Arrays.asList("Entity", "Repository", "Specification", "Service", "ServiceImpl",
+                "Controller", "Index.ts", "Index.vue");
             List<String> resultValueList = new ArrayList<>(resultMap.values());
 
             Map<String, String> map = new LinkedHashMap<>();
             for (int i = 0; i < resultValueList.size(); i++) {
-                map.put(titleList.get(i),resultValueList.get(i));
+                map.put(titleList.get(i), resultValueList.get(i));
             }
             return Y9Result.success(map);
         } catch (Exception e) {
             LOGGER.error("生成失败！", e);
             return Y9Result.failure("生成失败!");
-        }
-    }
-
-    /** 文件不存在时创建该文件 */
-    private static void createFileIfNotExists(String path) {
-        File f = new File(path);
-        if (!f.exists()) {
-            f.mkdirs();
         }
     }
 
@@ -230,7 +245,7 @@ public class CodeController {
                 }
                 item.setIndexFieldList(String.join(",", indexFieldList));
             }).collect(Collectors.toList());
-            CodeGenerateUtils.generateEntity(codeSystem, codeEntity, codeFieldList,codeIndexList, projectPath);
+            CodeGenerateUtils.generateEntity(codeSystem, codeEntity, codeFieldList, codeIndexList, projectPath);
             CodeGenerateUtils.generateEntityVue(codeEntity, codeFieldList, targetVuePath);
         }
     }

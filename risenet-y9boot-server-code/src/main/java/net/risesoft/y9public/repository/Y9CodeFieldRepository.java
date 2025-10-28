@@ -24,5 +24,5 @@ public interface Y9CodeFieldRepository extends JpaRepository<Y9CodeField, String
     @Transactional
     void deleteAllByCodeEntityIdIn(List<String> codeEntityIds);
 
-    Integer countByCodeEntityIdAndAndId(String codeEntityId,String id);
+    Integer countByCodeEntityIdAndAndId(String codeEntityId, String id);
 }

@@ -1,9 +1,8 @@
 package net.risesoft.y9public.service;
 
-import net.risesoft.pojo.Y9Result;
-import net.risesoft.y9public.entity.vo.Y9CodeIndex;
-
 import java.util.List;
+
+import net.risesoft.y9public.entity.vo.Y9CodeIndex;
 
 public interface Y9CodeIndexService {
     List<Y9CodeIndex> findByEntityId(String entityId);

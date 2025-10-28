@@ -1,15 +1,20 @@
 package net.risesoft.y9public.entity.vo;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.annotations.Comment;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.risesoft.base.BaseEntity;
-import org.hibernate.annotations.Comment;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import java.util.List;
+import net.risesoft.base.BaseEntity;
 
 @Entity
 @Table(name = "Y9_COMMON_CODE_INDEX")
@@ -32,7 +37,7 @@ public class Y9CodeIndex extends BaseEntity {
 
     /** 字段名称 */
     @NotBlank
-    @Column(name = "INDEXNAME", length = 50, nullable = false,unique = true)
+    @Column(name = "INDEXNAME", length = 50, nullable = false, unique = true)
     @Comment("索引名称")
     @Pattern(regexp = "^(?=.{1,255}$)[a-z][A-Za-z\\d]*$", message = "请使用驼峰命名")
     private String indexName;

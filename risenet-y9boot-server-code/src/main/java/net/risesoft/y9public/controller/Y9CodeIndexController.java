@@ -1,6 +1,20 @@
 package net.risesoft.y9public.controller;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import lombok.RequiredArgsConstructor;
+
 import net.risesoft.log.annotation.RiseLog;
 import net.risesoft.pojo.Y9Result;
 import net.risesoft.y9.exception.Y9BusinessException;
@@ -11,13 +25,6 @@ import net.risesoft.y9public.service.Y9CodeEntityService;
 import net.risesoft.y9public.service.Y9CodeIndexService;
 import net.risesoft.y9public.service.Y9CodeSystemService;
 import net.risesoft.y9public.service.Y9FileStoreService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Validated
 @RequiredArgsConstructor
@@ -50,8 +57,8 @@ public class Y9CodeIndexController {
 
         Set<String> indexNameSet = y9CodeIndexList.stream().map(Y9CodeIndex::getIndexName).collect(Collectors.toSet());
 
-        if (y9CodeIndexList.size() > indexNameSet.size()){
-            throw new Y9BusinessException(500,"索引名称重复");
+        if (y9CodeIndexList.size() > indexNameSet.size()) {
+            throw new Y9BusinessException(500, "索引名称重复");
         }
 
         List<Y9CodeIndex> newCodeIndex = codeIndexService.saveIndexList(y9CodeIndexList);
@@ -72,12 +79,13 @@ public class Y9CodeIndexController {
     }
 
     @GetMapping("/indexHasExists")
-    public Y9Result<Boolean> indexHasExists(@RequestParam("indexName") String indexName, @RequestParam("codeEntityId") String codeEntityId) {
+    public Y9Result<Boolean> indexHasExists(@RequestParam("indexName") String indexName,
+        @RequestParam("codeEntityId") String codeEntityId) {
         return Y9Result.success(codeIndexService.indexHasExists(indexName, codeEntityId));
     }
 
     @GetMapping("/deleteById")
-    public Y9Result<Boolean> deleteById(@RequestParam String id){
+    public Y9Result<Boolean> deleteById(@RequestParam String id) {
         return Y9Result.success(codeIndexService.deleteById(id));
     }
 }

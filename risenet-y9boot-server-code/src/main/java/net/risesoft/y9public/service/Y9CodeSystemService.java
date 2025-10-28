@@ -54,7 +54,6 @@ public interface Y9CodeSystemService {
      */
     Page<Y9CodeSystem> page(int page, int rows);
 
-
     /**
      * @description 分页获取
      *
