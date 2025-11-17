@@ -213,7 +213,7 @@ public class CodeController {
         } else {
             Y9FileStore y9FileStore = y9FileStoreService.getById(codeSystem.getFileStoreId());
             y9FileStore = y9FileStore == null ? y9FileStoreService.uploadFile(to, fullPath, fileName + ".zip")
-                : y9FileStoreService.uploadFileReplace(to, codeSystem.getFileStoreId());
+                : y9FileStoreService.uploadFileReplace(codeSystem.getFileStoreId(), to);
             fileStoreId = y9FileStore.getId();
         }
 
