@@ -123,7 +123,6 @@ y9:
             directUrl: http://localhost:7055
     common:
         cacheEnabled: true
-        kafkaEnabled: true
         orgBaseUrl: http://localhost:7055/server-platform
         userOnlineBaseUrl: http://localhost:7055/server-useronline
         logBaseUrl: http://localhost:7055/server-log

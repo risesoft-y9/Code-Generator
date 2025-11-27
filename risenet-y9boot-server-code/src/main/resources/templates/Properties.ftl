@@ -106,7 +106,6 @@ y9:
             kafkaEnabled: false
     common:
         cacheEnabled: true
-        kafkaEnabled: true
         homeBaseUrl: https://dev.youshengyun.com/y9home
         logBaseUrl: https://dev.youshengyun.com/log
         orgBaseUrl: https://dev.youshengyun.com/platform
@@ -273,7 +272,6 @@ y9:
             kafkaEnabled: false
     common:
         cacheEnabled: true
-        kafkaEnabled: true
         homeBaseUrl: http://localhost:8080/y9home
         logBaseUrl: http://localhost:8080/log
         orgBaseUrl: http://localhost:8080/platform
