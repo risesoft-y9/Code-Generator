@@ -1,8 +1,8 @@
 <!--
  * @Author: lizhiwen
  * @Date: 2022-05-17 17:43:02
- * @LastEditors: yihong yihong@risesoft.net
- * @LastEditTime: 2024-06-24 15:14:43
+ * @LastEditors: mengjuhua
+ * @LastEditTime: 2025-12-09 10:38:03
  * @Description:
 -->
 <template>
@@ -149,7 +149,7 @@
                     options: [],
                     render: () => {
                         //text类型渲染的内容
-                        return h('span', t('本地化'));
+                        return h('span', systemInfo.value?.environment == '0' ? t('云服务') : t('本地化'));
                     }
                 }
             },
@@ -205,8 +205,13 @@
             //根据environment值改变选项
             if (isEdit && item.prop == 'environment') {
                 item.props.options = [];
-
-                item.props.options.push({ label: '本地化', value: 1 });
+                if (systemInfo.value?.environment == '1') {
+                    item.props.options.push({ label: '本地化', value: 1 });
+                    item.props.options.push({ label: '云服务', value: 0 });
+                } else {
+                    item.props.options.push({ label: '云服务', value: 0 });
+                    item.props.options.push({ label: '本地化', value: 1 });
+                }
             }
         });
     }

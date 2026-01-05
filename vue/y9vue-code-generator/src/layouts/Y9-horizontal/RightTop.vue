@@ -1,9 +1,10 @@
 <script lang="ts" setup>
     import { watch, inject, ref } from 'vue';
     import RightTopUser from '../components/RightTopUser.vue';
-    import { Edit } from '@element-plus/icons';
+    import { Edit } from '@element-plus/icons-vue';
     import { useSettingStore } from '@/store/modules/settingStore';
     import y9_storage from '@/utils/storage';
+    import { $y9_SSO } from '@/main'; // 个人信息 —— 头像
 
     const settingStore = useSettingStore();
     // 注入 字体变量
@@ -38,6 +39,22 @@
 
     // 个人信息 —— 头像
     const userInfo = y9_storage.getObjectItem('ssoUserInfo');
+
+    const logout = () => {
+        try {
+            const params = {
+                to: { path: window.location.pathname },
+                logoutUrl: import.meta.env.VUE_APP_SSO_LOGOUT_URL + import.meta.env.VUE_APP_NAME + '/',
+                __y9delete__: () => {
+                    // 删除前执行的函数
+                    console.log('删除前执行的函数');
+                }
+            };
+            $y9_SSO.ssoLogout(params);
+        } catch (error) {
+            ElMessage.error(error.message || 'Has Error');
+        }
+    };
 </script>
 
 <template>
@@ -77,12 +94,14 @@
                 <i class="ri-moon-line" @click="toggleDark" v-if="!isDark"></i>
                 <i class="ri-sun-line" @click="toggleDark" v-else></i>
             </div> -->
-            <div class="item user">
-                <RightTopUser style="z-index: 9999" />
-            </div>
+            <RightTopUser style="z-index: 9999" />
             <div class="item user">
                 <!-- <img src="@/assets/images/app-icon.png"> -->
                 <el-avatar :src="userInfo.avator ? userInfo.avator : ''"> {{ userInfo.loginName }}</el-avatar>
+            </div>
+            <div class="item" @click="logout">
+                <i class="ri-logout-box-r-line"></i>
+                <span>{{ $t('退出') }}</span>
             </div>
         </div>
     </div>

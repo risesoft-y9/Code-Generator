@@ -35,7 +35,7 @@
 
                 <y9Tree
                     ref="y9TreeRef"
-                    v-loading="treeLoading"
+                    v-loading="TreeLoading"
                     :data="alreadyLoadTreeData"
                     :lazy="lazy"
                     :load="onTreeLazyLoad"
@@ -65,8 +65,7 @@
 
 <script lang="ts" setup>
     import { useSettingStore } from '@/store/modules/settingStore';
-    import { $dataType, $deepAssignObject, $deeploneObject } from '@/utils/object'; //工具类
-    import { computed, onMounted, useCssModule, reactive, watch, inject, ref } from 'vue';
+    import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
     import y9_storage from '@/utils/storage';
 
     const props = defineProps({
@@ -110,8 +109,15 @@
             //是否显示删除icon
             type: Boolean,
             default: true
+        },
+        virtualScroll: {
+            // 树组件是否开启虚拟滚动
+            type: Boolean,
+            default: false
         }
     });
+
+    const TreeLoading = ref(false);
 
     const emits = defineEmits(['onTreeClick', 'onDeleteTree', 'onNodeExpand']);
 
@@ -154,9 +160,12 @@
                 case 'Department': //部门
                     item.title_icon = 'ri-slack-line'; //设置图标
                     item.newName = item.name;
+                    if (item.disabled) {
+                        item.newName = item.name + '[禁用]'; //显示名称
+                    }
 
                     //判断是否有权限删除
-                    const guidPathArr = item.guidPath.split(',');
+                    const guidPathArr = item.guidPath ? item.guidPath.split(',') : [];
                     if (isGlobalManager) {
                         item.delete_icon = props.showNodeDelete;
                     } else if (!guidPathArr.includes(parentId) || item.id === parentId) {
@@ -164,18 +173,25 @@
                     } else {
                         item.delete_icon = props.showNodeDelete;
                     }
+
                     break;
 
                 case 'Group': //组
                     item.isLeaf = true; //叶子节点（即没有展开按钮）
                     item.title_icon = 'ri-shield-star-line'; //设置图标
                     item.newName = item.name; //显示名称
+                    if (item.disabled) {
+                        item.newName = item.name + '[禁用]'; //显示名称
+                    }
                     break;
 
                 case 'Position': //岗位
                     item.isLeaf = true; //叶子节点（即没有展开按钮）
                     item.title_icon = 'ri-shield-user-line'; //设置图标
                     item.newName = item.name; //显示名称
+                    if (item.disabled) {
+                        item.newName = item.name + '[禁用]'; //显示名称
+                    }
                     break;
                 case 'Manager': //子域三元
                     item.title_icon = 'ri-women-line'; //设置图标
@@ -188,11 +204,11 @@
                     item.isLeaf = true; //叶子节点（即没有展开按钮）
                     item.title_icon = 'ri-women-line'; //设置图标
                     item.newName = item.name; //显示名称
-                    if (item.sex == 1) {
-                        item.title_icon = 'ri-men-line'; //设置图标
-                    }
                     if (item.disabled) {
                         item.newName = item.name + '[禁用]'; //显示名称
+                    }
+                    if (item.sex == 1) {
+                        item.title_icon = 'ri-men-line'; //设置图标
                     }
                     if (!item.original) {
                         if (item.sex == 1) {
@@ -208,6 +224,7 @@
                 item.id = i;
                 item.title_icon = 'ri-mac-line';
             }
+
             if (!item.isLeaf) {
                 //设置chilren属性，有chilren属性才有展开icon
                 item.children = [];
@@ -215,7 +232,7 @@
         }
     }
 
-    //tree实例
+    // tree实例
     const y9TreeRef = ref();
 
     //懒加载
@@ -223,8 +240,16 @@
         if (node.$level === 0) {
             //1.获取数据
             let data = [];
-            const res = await props.treeApiObj?.topLevel(); //请求一级节点接口
-            data = res.data || res;
+            const topLevelParams = props.treeApiObj?.topLevel?.params;
+            if (topLevelParams) {
+                let params = {};
+                params = topLevelParams;
+                const res = await props.treeApiObj?.topLevel?.api(params);
+                data = res.data || res;
+            } else {
+                const res = await props.treeApiObj?.topLevel(); //请求一级节点接口
+                data = res.data || res;
+            }
 
             //2.格式化数据
             await formatLazyTreeData(data, true);
@@ -290,29 +315,40 @@
                 }
                 params.key = searchkey;
 
+                TreeLoading.value = true;
+
                 //请求搜索接口
                 const res = await props.treeApiObj?.search?.api(params);
+                if (res.code !== 0) {
+                    ElMessage({
+                        type: 'error',
+                        message: res.msg,
+                        offset: 65
+                    });
+                    TreeLoading.value = false;
+                    return;
+                }
+                if (searchkey != apiSearchKey.value) {
+                    // 解决逐字输入时（多次调用时），当数据量较大时前一个接口返回的数据较慢覆盖了后一个接口返回的数据的问题
+                    TreeLoading.value = false;
+                    return;
+                }
                 const data = res.data;
 
                 //格式化tree数据
-                await formatLazyTreeData(data);
+                await formatLazyTreeData(data, true);
 
-                // type 为App 的parentId 为空
+                // nodeType 为App 的parentId 为空
                 await data?.map((item) => {
-                    if (item.type == 'App') {
-                        item.parentId = '';
-                    }
-                });
-
-                // resourceType 为0 的parentId 为空
-                await data?.map((item) => {
-                    if (item.resourceType == 0) {
+                    if (item.nodeType == 'App') {
                         item.parentId = '';
                     }
                 });
 
                 //根据搜索结果转换成tree结构显示出来
-                alreadyLoadTreeData.value = transformTreeBySearchResult(data);
+                alreadyLoadTreeData.value = await transformTreeBySearchResult(data);
+
+                TreeLoading.value = false;
 
                 nextTick(() => {
                     y9TreeRef.value.setExpandAll();
@@ -336,7 +372,7 @@
     };
 
     //根据搜索结果转换成tree结构
-    function transformTreeBySearchResult(result) {
+    async function transformTreeBySearchResult(result) {
         const treeData = [];
         for (let i = 0; i < result.length; i++) {
             const item = result[i];
@@ -347,21 +383,20 @@
                 if (child.length > 0) {
                     //如果有子节点则递归子节点，进行组合
                     item.children = child;
-                    const fn2 = (data) => {
+                    const fn2 = async (data) => {
                         for (let j = 0; j < data.length; j++) {
                             const itemJ = data[j];
                             const childs = result.filter((resultItem) => resultItem.parentId === itemJ.id);
                             if (childs.length > 0) {
                                 itemJ.children = childs;
                                 if (itemJ.children.length > 0) {
-                                    fn2(itemJ.children);
+                                    await fn2(itemJ.children);
                                 }
                             }
                         }
                     };
-                    fn2(item.children); //递归子节点
+                    await fn2(item.children); //递归子节点
                 }
-
                 treeData.push(item);
             }
         }
@@ -577,9 +612,9 @@
         }
     }
 
-    :deep(.el-col-12) {
-        padding-left: 25px !important;
-    }
+    // :deep(.el-col-12) {
+    //     padding-left: 25px !important;
+    // }
 
     /* 固定左侧树 */
     .fixed {

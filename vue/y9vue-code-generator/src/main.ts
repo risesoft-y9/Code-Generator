@@ -1,28 +1,30 @@
 /*
  * @Author: your name
  * @Date: 2022-01-10 18:09:52
- * @LastEditTime: 2022-02-14 16:41:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2025-12-09 10:36:53
+ * @LastEditors: mengjuhua
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: /sz- team-frontend-9.6.x/y9vue-home/src/main.js
+ * @FilePath: \y9-vue\y9vue-code\src\main.ts
  */
 import router from '@/router/index';
 import { setupStore } from '@/store';
 import 'animate.css';
 import 'normalize.css'; // 样式初始化
 import 'remixicon/fonts/remixicon.css';
-import { createApp } from 'vue';
-//import sso from "@/sso-rebuild"
+import { createApp, ref, watch } from 'vue';
 import sso from 'y9plugin-sso';
 import App from './App.vue';
 import './theme/global.scss';
-import customDirective from '@/utils/directive';
-
 import i18n from './language';
-import y9pluginComponents from 'y9plugin-components'; //有生云公共组件库
-import y9_zhCn from 'y9plugin-components/src/language/zh-cn'; //默认的y9组件插件中文包
-import y9_en from 'y9plugin-components/src/language/en'; //默认的y9组件插件英文包
+
+//有生云公共组件库
+import y9pluginComponents from 'y9plugin-components-auto';
+import 'y9plugin-components-auto/dist/style.css';
+import y9_zhCn from 'y9plugin-components-auto/dist/locale/zh-cn.mjs'; //默认的y9组件插件中文包
+import y9_en from 'y9plugin-components-auto/dist/locale/en.mjs'; //默认的y9组件插件英文包
 import { useSettingStore } from '@/store/modules/settingStore';
+import customDirective from '@/utils/directive'; //自定义指令
+
 import 'viewerjs/dist/viewer.css';
 import VueViewer from 'v-viewer';
 import '@kangc/v-md-editor/lib/style/base-editor.css';
@@ -60,7 +62,7 @@ const app: any = createApp(App);
 app.use(sso, { env });
 setupStore(app);
 
-let opts = ref({}); //y9组件选项配置
+let opts = ref({} as any); //y9组件选项配置
 watch(
     () => useSettingStore().getWebLanguage, //监听语言变化，配置对应的语言包
     (newLang) => {
@@ -70,11 +72,13 @@ watch(
         immediate: true
     }
 );
-app.use(i18n);
-app.use(y9pluginComponents, opts.value);
 
+app.use(y9pluginComponents, opts.value);
 app.use(router);
 app.use(customDirective);
+
+app.use(i18n);
+
 app.mount('#app');
 app.use(VueViewer);
 

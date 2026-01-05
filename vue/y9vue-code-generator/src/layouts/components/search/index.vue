@@ -1,7 +1,14 @@
+<!--
+ * @Author: your name
+ * @Date: 2022-01-13 17:31:19
+ * @LastEditTime: 2026-01-05 15:27:55
+ * @LastEditors: mengjuhua
+ * @Description:   搜索 
+-->
 <script lang="ts" setup>
-    import { Search } from '@element-plus/icons';
+    import { Search } from '@element-plus/icons-vue';
     import { useSettingStore } from '@/store/modules/settingStore';
-    import { onMounted } from 'vue-demi';
+    import { onMounted, ref } from 'vue';
 
     const settingStore = useSettingStore();
     const searchVisible = ref(false);
@@ -40,6 +47,7 @@
                 </template>
             </el-input>
         </div>
+        <input autocomplete="new-password" hidden type="password" />
     </el-drawer>
 </template>
 

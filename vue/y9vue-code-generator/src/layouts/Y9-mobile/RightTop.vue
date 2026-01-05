@@ -1,8 +1,9 @@
 <script lang="ts" setup>
     import RightTopUser from '../components/RightTopUser.vue';
     import { watch, inject, ref } from 'vue';
-    import { Edit, FullScreen } from '@element-plus/icons';
+    import { Edit, FullScreen } from '@element-plus/icons-vue';
     import { useSettingStore } from '@/store/modules/settingStore';
+    import { $y9_SSO } from '@/main'; // 个人信息 —— 头像
 
     const props = defineProps({
         menuCollapsed: {
@@ -45,6 +46,22 @@
     const refreshFunc = () => {
         window.location = window.location.href;
     };
+
+    const logout = () => {
+        try {
+            const params = {
+                to: { path: window.location.pathname },
+                logoutUrl: import.meta.env.VUE_APP_SSO_LOGOUT_URL + import.meta.env.VUE_APP_NAME + '/',
+                __y9delete__: () => {
+                    // 删除前执行的函数
+                    console.log('删除前执行的函数');
+                }
+            };
+            $y9_SSO.ssoLogout(params);
+        } catch (error) {
+            ElMessage.error(error.message || 'Has Error');
+        }
+    };
 </script>
 
 <template>
@@ -86,6 +103,10 @@
             </div> -->
             <div :class="{ item: true, user: true, 'user-mobile': settingStore.getWindowWidth > 425 }">
                 <RightTopUser />
+            </div>
+            <div class="item" @click="logout">
+                <i class="ri-logout-box-r-line"></i>
+                <span>{{ $t('退出') }}</span>
             </div>
         </div>
     </div>

@@ -55,6 +55,14 @@ export default (serve) => {
             },
             cors: true
         },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: 'modern-compiler',
+                    silenceDeprecations: ['legacy-js-api', 'import']
+                }
+            }
+        },
         plugins: [
             vue(),
             AutoImport({

@@ -3,6 +3,7 @@
     import RightTopUser from '../components/RightTopUser.vue';
     import { useSettingStore } from '@/store/modules/settingStore';
     import y9_storage from '@/utils/storage';
+    import { $y9_SSO } from '@/main'; // 个人信息 —— 头像
 
     // 个人信息 —— 头像
     const userInfo = y9_storage.getObjectItem('ssoUserInfo');
@@ -52,6 +53,22 @@
         // window.location = window.location.href
         emits('refresh');
     };
+
+    const logout = () => {
+        try {
+            const params = {
+                to: { path: window.location.pathname },
+                logoutUrl: import.meta.env.VUE_APP_SSO_LOGOUT_URL + import.meta.env.VUE_APP_NAME + '/',
+                __y9delete__: () => {
+                    // 删除前执行的函数
+                    console.log('删除前执行的函数');
+                }
+            };
+            $y9_SSO.ssoLogout(params);
+        } catch (error) {
+            ElMessage.error(error.message || 'Has Error');
+        }
+    };
 </script>
 
 <template>
@@ -91,14 +108,17 @@
                 <i class="ri-moon-line" @click="toggleDark" v-if="!isDark"></i>
                 <i class="ri-sun-line" @click="toggleDark" v-else></i>
             </div> -->
-            <div class="item user">
-                <RightTopUser />
-            </div>
+            <RightTopUser />
             <div class="item user">
                 <!-- 头像测试链接地址：https://www.youshengyun.com/fileManager/files/e6b5d41fd2bd4cdda538139f9b7848c7.jpg -->
                 <el-avatar :src="userInfo.avator ? userInfo.avator : ''">
                     {{ $t(`${userInfo.loginName ?? '访客'}`) }}
                 </el-avatar>
+            </div>
+
+            <div class="item" @click="logout">
+                <i class="ri-logout-box-r-line"></i>
+                <span>{{ $t('退出') }}</span>
             </div>
         </div>
     </div>

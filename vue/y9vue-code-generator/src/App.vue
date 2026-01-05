@@ -1,22 +1,30 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-10 18:09:52
- * @LastEditTime: 2023-02-24 14:59:28
+ * @LastEditTime: 2026-01-05 16:06:55
  * @LastEditors: mengjuhua
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: /sz- team-frontend-9.6.x/y9vue-home/src/App.vue
+ * @Description: 初始页
+ * @FilePath: \vue\y9vue-code-generator\src\App.vue
 -->
 <script lang="ts" setup>
     import { useI18n } from 'vue-i18n';
-    import { onMounted, onUnmounted, ref, provide, watch, computed } from 'vue';
+    import y9_zhCn from 'y9plugin-components-auto/dist/locale/zh-cn.mjs'; //默认的y9组件插件中文包
+    import y9_en from 'y9plugin-components-auto/dist/locale/en.mjs'; //默认的y9组件插件英文包
+    import watermark from 'y9plugin-watermark/lib/index';
+    import { computed, onMounted, onUnmounted, provide, ref, watch } from 'vue';
     // 引入字体调整的方法
     import { getConcreteSize } from '@/utils/index';
-    // 引入水印插件
-    import watermark from 'y9plugin-watermark/lib/index';
     import y9_storage from '@/utils/storage';
     import { useSettingStore } from '@/store/modules/settingStore';
 
     const settingStore = useSettingStore();
+
+    // 获取element-plus组件的当前语言设置
+    const currentLocale = ref({
+        name: 'zh-cn',
+        el: y9_zhCn.el
+    });
+
     const { t } = useI18n();
 
     interface watermarkData {
@@ -27,28 +35,27 @@
 
     // 定义⽔印⽂字变量
     const userInfo = y9_storage.getObjectItem('ssoUserInfo');
-    let dept = userInfo.dn?.split(',')[1]?.split('=')[1];
+    let dept = userInfo?.dn?.split(',')[1]?.split('=')[1];
     let watermarkValue = ref<watermarkData>({
         name: userInfo.name,
         text: computed(() => t('保守秘密，慎之又慎')),
         deptName: dept
     });
-    //监听语⾔变化，传⼊对应的⽔印语句
     watch(
-        () => useSettingStore().getWebLanguage,
+        () => useSettingStore().getWebLanguage, //监听语言变化，传入对应的水印语句
         (newLang) => {
             setTimeout(() => {
-                if (userInfo) {
-                    watermarkValue.value.name = t(userInfo?.name);
-                    watermarkValue.value.deptName = t(dept);
-                }
+                currentLocale.value =
+                    newLang === 'en' ? { name: 'en', el: y9_en.el } : { name: 'zh-cn', el: y9_zhCn.el };
+                watermarkValue.value.name = t(userInfo.name);
+                watermarkValue.value.deptName = t(dept);
                 watermark(watermarkValue, sizeObjInfo.value.baseFontSize);
             });
-        }
+        },
+        { immediate: true }
     );
-    //监听⼤⼩变化，传⼊对应⽔印⽂字⼤⼩
     watch(
-        () => useSettingStore().getFontSize,
+        () => useSettingStore().getFontSize, //监听大小变化，传入对应水印文字大小
         (newLang) => {
             setTimeout(() => {
                 watermark(watermarkValue, sizeObjInfo.value.baseFontSize);
@@ -59,10 +66,8 @@
     onMounted(() => {
         // 执⾏⽔印⽅法
         setTimeout(() => {
-            if (userInfo) {
-                watermarkValue.value.name = t(userInfo?.name);
-                watermarkValue.value.deptName = t(dept);
-            }
+            watermarkValue.value.name = t(userInfo.name);
+            watermarkValue.value.deptName = t(dept);
             watermark(watermarkValue, sizeObjInfo.value.baseFontSize);
         });
     });
@@ -100,7 +105,8 @@
         biggerFontSize: getConcreteSize(settingStore.getFontSize, 40) + 'px',
         maximumFontSize: getConcreteSize(settingStore.getFontSize, 48) + 'px',
         buttonSize: settingStore.getFontSize,
-        lineHeight: settingStore.getLineHeight
+        lineHeight: settingStore.getLineHeight,
+        logoWidth: settingStore.getLogoWidth
     });
     // 监听 转换font-size值
     watch(
@@ -118,6 +124,7 @@
             sizeObjInfo.value.maximumFontSize = getConcreteSize(newVal, 48) + 'px';
             sizeObjInfo.value.buttonSize = newVal;
             sizeObjInfo.value.lineHeight = settingStore.getLineHeight;
+            sizeObjInfo.value.logoWidth = settingStore.getLogoWidth;
         }
     );
 
@@ -126,5 +133,7 @@
 </script>
 
 <template>
-    <router-view></router-view>
+    <el-config-provider :locale="currentLocale">
+        <router-view />
+    </el-config-provider>
 </template>

@@ -93,16 +93,7 @@ async function check() {
         return false;
     }
     // token在有效期且角色已获取路由
-    if (isTokenValid && isRoleValid) {
-        return true;
-    } else {
-        if (!isTokenValid) {
-            await $y9_SSO.ssoLogout({
-                logoutUrl: import.meta.env.VUE_APP_SSO_LOGOUT_URL + import.meta.env.VUE_APP_NAME + '/'
-            });
-        }
-        return false;
-    }
+    return true;
 }
 
 let flag = 0;
@@ -118,7 +109,12 @@ export const routerBeforeEach = async (to, from) => {
         return true;
     }
     let path = to.path;
-    let CHECK = await check();
+    let CHECK;
+    if (path == '/system' || path == '/localSystem') {
+        CHECK = await check();
+    } else {
+        CHECK = (await checkRole(['systemAdmin'])) ? true : false;
+    }
     if (CHECK) {
         if (!to.name) {
             let array = await router.getRoutes();

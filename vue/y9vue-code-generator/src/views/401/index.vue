@@ -1,8 +1,8 @@
 <!--
- * @Author:  
+ * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-02 10:51:50
- * @LastEditors: mengjuhua
- * @LastEditTime: 2023-12-26 11:22:20
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2022-08-02 11:12:06
  * @Description: 无权限
 -->
 
@@ -10,37 +10,24 @@
     <div class="login">
         <div class="form">
             <h1 class="title"> 401 Error </h1>
-            <p class="msg">抱歉，该页面不存在或当前账号无权访问！！！</p>
+            <p class="msg">抱歉，该用户不是管理员人员，没有权限！！！</p>
             <el-button
-                :size="fontSizeObj.buttonSize"
-                :style="{ fontSize: fontSizeObj.baseFontSize }"
-                type="primary"
-                @click="toIndex"
-            >
-                返回首页
-            </el-button>
-            <el-button
-                :size="fontSizeObj.buttonSize"
-                :style="{ fontSize: fontSizeObj.baseFontSize }"
+                :size="settingStore.getFontSize"
+                :style="{ fontSize: baseFontSize }"
                 type="primary"
                 @click="logout"
-            >
-                退出重新登录
+                >退出重新登录
             </el-button>
         </div>
     </div>
 </template>
 <script lang="ts" setup>
     import { $y9_SSO } from '@/main';
-    import { inject } from 'vue';
-    import { useRouter } from 'vue-router';
-    // 注入 字体对象
-    const fontSizeObj: any = inject('sizeObjInfo');
-    const router = useRouter();
+    // settingStore的引入
+    import { useSettingStore } from '@/store/modules/settingStore';
+    import { inject, ref, watch } from 'vue';
 
-    function toIndex() {
-        router.push({ path: '/' });
-    }
+    const settingStore = useSettingStore();
 
     function logout() {
         try {
@@ -52,6 +39,21 @@
             ElMessage.error(error.msg || 'Has Error');
         }
     }
+
+    // 注入 字体对象
+    const fontSizeObj: any = inject('fontSize');
+    // 14px  'base-font-size'
+    let baseFontSize = ref(fontSizeObj['base-font-size'].value);
+    watch(
+        () => fontSizeObj,
+        () => {
+            baseFontSize.value = fontSizeObj['base-font-size'].value;
+        },
+        {
+            deep: true,
+            immediate: true
+        }
+    );
 </script>
 <style scoped>
     .login {
@@ -61,7 +63,7 @@
         min-height: 300px;
         overflow: auto;
         scrollbar-width: none;
-        /* background-image: url("../../assets/images/bg.jpg"); */
+        /* background-images: url("../../assets/images/bg.jpg"); */
         background-color: #f5f7f9;
         background-repeat: no-repeat;
         background-position: center center;

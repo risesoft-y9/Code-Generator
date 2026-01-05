@@ -1,4 +1,9 @@
 <template>
+    <div class="item">
+        <i class="ri-map-pin-line"></i>
+        <span>{{ deptName }}</span>
+    </div>
+
     <div v-if="!userInfo" class="name" @click="(e) => e.preventDefault()">
         <!-- show & if 的vue指令 仅用于适配移动端 -->
         <div v-show="settingStore.getWindowWidth > 425">
@@ -16,14 +21,36 @@
             {{ userInfo.loginName }}
         </el-avatar>
     </div>
-    <div v-else>
+
+    <div class="item" v-else>
+        <i class="ri-user-line"></i>
+        <!-- show & if 的vue指令 仅用于适配移动端 -->
+        <div v-show="settingStore.getWindowWidth > 425">
+            <template v-if="userInfo">
+                <span>{{ userInfo.name }}</span>
+            </template>
+            <template v-else><span>访客</span></template>
+        </div>
+        <el-avatar
+            v-if="settingStore.device === 'mobile'"
+            :src="userInfo.avator ? userInfo.avator : ''"
+            :style="{
+                'font-size': fontSizeObj.baseFontSize,
+                'background-color': 'var(--el-color-primary)',
+                'margin-top': '8px'
+            }"
+        >
+            {{ userInfo.loginName }}
+        </el-avatar>
+    </div>
+
+    <div style="display: none">
         <el-dropdown :hide-on-click="true" class="user-el-dropdown" @command="onMenuClick">
             <div class="name" @click="(e) => e.preventDefault()">
                 <!-- show & if 的vue指令 仅用于适配移动端 -->
                 <div v-show="settingStore.getWindowWidth > 425">
                     <template v-if="userInfo">
                         <span>{{ $t(`${userInfo.name}`) }}</span>
-                        <span>{{ initInfo?.department?.name }}</span>
                     </template>
                     <template v-else><span>访客</span></template>
                 </div>
@@ -42,50 +69,15 @@
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item command="personalCenter">
+                    <!-- <el-dropdown-item command="personalCenter">
                         <div
                             :style="{ 'font-size': fontSizeObj.baseFontSize, 'line-height': fontSizeObj.lineHeight }"
                             class="el-dropdown-item"
                         >
                             <i class="ri-user-line"></i>{{ $t('个人中心') }}
                         </div>
-                    </el-dropdown-item>
-                    <el-dropdown-item command="signIn">
-                        <div
-                            :style="{ 'font-size': fontSizeObj.baseFontSize, 'line-height': fontSizeObj.lineHeight }"
-                            class="el-dropdown-item"
-                        >
-                            <i class="ri-calendar-check-line"></i>{{ $t('已签到') }}
-                        </div>
-                    </el-dropdown-item>
-                    <el-dropdown-item command="signOut">
-                        <div
-                            :style="{ 'font-size': fontSizeObj.baseFontSize, 'line-height': fontSizeObj.lineHeight }"
-                            class="el-dropdown-item"
-                        >
-                            <i class="ri-bookmark-line"></i>{{ $t('已签退') }}
-                        </div>
-                    </el-dropdown-item>
-                    <el-divider style="padding-bottom: 12px; margin: 0px; margin-top: 6px"></el-divider>
-                    <el-dropdown-item command="changeDept">
-                        <div
-                            :style="{ 'font-size': fontSizeObj.baseFontSize, 'line-height': fontSizeObj.lineHeight }"
-                            class="el-dropdown-item"
-                        >
-                            <i class="ri-route-line"></i>{{ $t('选择切换部门') }}
-                        </div>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                        <div
-                            v-for="item in departmentMapList"
-                            :key="item.departmentId"
-                            :style="{ 'font-size': fontSizeObj.baseFontSize, 'line-height': fontSizeObj.lineHeight }"
-                            class="el-dropdown-item"
-                            style="text-align: center"
-                            @click="changeDept(item.departmentId)"
-                            >{{ item.departmentName }}
-                        </div>
-                    </el-dropdown-item>
+                    </el-dropdown-item> -->
+
                     <el-divider style="padding-bottom: 5px; margin: 0px"></el-divider>
                     <el-dropdown-item command="logout">
                         <div
@@ -99,90 +91,142 @@
             </template>
         </el-dropdown>
     </div>
-    <!-- <PersonInfo ref="personInfo"/> -->
 </template>
-<script lang="ts">
-    import { ref, watch, inject, defineComponent } from 'vue';
+<script lang="ts" setup>
+    import { ref, watch, inject, defineComponent, onMounted } from 'vue';
     import { useRouter } from 'vue-router';
     import { useSettingStore } from '@/store/modules/settingStore';
     import y9_storage from '@/utils/storage';
-    import IconSvg from './IconSvg';
     import { $y9_SSO } from '@/main';
 
-    // import PersonInfo from '@/views/personal/personInfo.vue';
-    interface RightTopUserSetupData {
-        settingStore?: any;
-        userInfo: Object;
-        initInfo: Object;
-        departmentMapList: Object;
-        onMenuClick: (event: any) => Promise<void>;
-        fontSizeObj: Object;
-    }
-
-    export default defineComponent({
-        name: 'RightTopUser',
-        components: {
-            IconSvg
-            // PersonInfo
-        },
-        setup(): RightTopUserSetupData {
-            const settingStore = useSettingStore();
-            // 注入 字体变量
-            const fontSizeObj: any = inject('sizeObjInfo');
-            const router = useRouter();
-            // const personInfo = ref();
-            // 获取当前登录用户信息
-            const userInfo = y9_storage.getObjectItem('ssoUserInfo');
-            const initInfo = y9_storage.getObjectItem('initInfo');
-            const departmentMapList = y9_storage.getObjectItem('departmentMapList');
-            // 点击菜单
-            const onMenuClick = async (command: string) => {
-                switch (command) {
-                    case 'personalCenter':
-                        // personInfo.value.show(userInfo.personId);
-                        router.push({ name: 'personInfo' });
-                        break;
-                    case 'signIn':
-                        break;
-                    case 'signOut':
-                        break;
-                    case 'changeDept':
-                        break;
-                    case 'logout':
-                        try {
-                            // const loginOut = await this.$store.dispatch("user/logout");
-                            const params = {
-                                to: { path: window.location.pathname },
-                                logoutUrl: import.meta.env.VUE_APP_SSO_LOGOUT_URL + import.meta.env.VUE_APP_NAME + '/',
-                                __y9delete__: () => {
-                                    // 删除前执行的函数
-                                    console.log('删除前执行的函数');
-                                }
-                            };
-                            $y9_SSO.ssoLogout(params);
-                        } catch (error) {
-                            this.$message.error(error.message || 'Has Error');
+    const settingStore = useSettingStore();
+    // 注入 字体变量
+    const fontSizeObj: any = inject('sizeObjInfo');
+    const router = useRouter();
+    // const personInfo = ref();
+    // 获取当前登录用户信息
+    const userInfo = y9_storage.getObjectItem('ssoUserInfo');
+    // 点击菜单
+    const onMenuClick = async (command: string) => {
+        switch (command) {
+            case 'personalCenter':
+                router.push({ name: 'personInfo' });
+                break;
+            case 'signIn':
+                break;
+            case 'signOut':
+                break;
+            case 'changeDept':
+                break;
+            case 'logout':
+                try {
+                    // const loginOut = await this.$store.dispatch("user/logout");
+                    const params = {
+                        to: { path: window.location.pathname },
+                        logoutUrl: import.meta.env.VUE_APP_SSO_LOGOUT_URL + import.meta.env.VUE_APP_NAME + '/',
+                        __y9delete__: () => {
+                            // 删除前执行的函数
+                            console.log('删除前执行的函数');
                         }
-                        break;
-
-                    default:
-                        break;
+                    };
+                    $y9_SSO.ssoLogout(params);
+                } catch (error) {
+                    ElNotification({
+                        title: '失败',
+                        message: error.message || 'Has Error',
+                        type: 'error',
+                        duration: 2000,
+                        offset: 80
+                    });
                 }
-            };
-            return {
-                settingStore,
-                userInfo,
-                initInfo,
-                departmentMapList,
-                onMenuClick,
-                fontSizeObj
-                // personInfo
-            };
+                break;
+
+            default:
+                break;
+        }
+    };
+
+    const dn = userInfo?.dn;
+    let deptName = ref('');
+
+    onMounted(() => {
+        if (dn.indexOf(',ou=') != -1) {
+            deptName.value = dn.substring(dn.indexOf(',ou=') + 4);
+            deptName.value = deptName.value.substring(0, deptName.value.indexOf(','));
+        } else {
+            deptName.value = dn.substring(dn.indexOf(',o=') + 3, dn.length);
         }
     });
 </script>
 <style lang="scss" scoped>
     @import '@/theme/global-vars.scss';
+    .item {
+        overflow: hidden;
+        padding: 0 11px;
+        min-width: 5px;
+        color: var(--el-menu-text-color);
+        cursor: pointer;
+        display: flex;
+        align-content: center;
+
+        i {
+            position: relative;
+            font-size: v-bind('fontSizeObj.extraLargeFont');
+            // top: 4px;
+        }
+
+        span {
+            font-size: v-bind('fontSizeObj.baseFontSize');
+            margin-left: 5px;
+        }
+
+        &:hover {
+            border-bottom: 2px solid var(--el-border-color-light);
+            color: var(--el-color-primary);
+        }
+
+        &:hover {
+            cursor: pointer;
+            border-bottom: none; // 鼠标划过或点击时不显示下划线
+        }
+
+        .name {
+            color: var(--el-text-color-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            & > div {
+                display: flex;
+                justify-content: end;
+
+                span {
+                    line-height: 20px;
+                    text-align: end;
+                }
+            }
+
+            i {
+                line-height: 20px;
+                top: 0px;
+            }
+
+            .badge {
+                margin-left: 5px;
+            }
+        }
+
+        /**当前岗位 */
+        &.notify {
+            .badge {
+                z-index: 1;
+
+                & > .el-badge__content--danger {
+                    background-color: var(--el-color-danger);
+                }
+            }
+        }
+    }
 
     .user-el-dropdown {
         z-index: 9999;
@@ -220,5 +264,9 @@
     .el-dropdown-item {
         width: 100%;
         display: flex;
+    }
+
+    :focus-visible {
+        outline: none; /* 为可见的焦点添加自定义样式 */
     }
 </style>

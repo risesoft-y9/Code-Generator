@@ -1,3 +1,10 @@
+<!--
+ * @Author: your name
+ * @Date: 2022-01-13 17:31:19
+ * @LastEditTime: 2023-08-03 09:46:26
+ * @LastEditors: mengjuhua
+ * @Description:    卡片式标签页
+-->
 <template>
     <div id="kernel-tabs">
         <el-tabs
@@ -31,8 +38,8 @@
     </div>
 </template>
 <script lang="ts" setup>
-    import { computed, ref, onMounted } from 'vue';
-    import { useRoute, useRouter } from 'vue-router';
+    import { computed } from 'vue';
+    import { useRouter } from 'vue-router';
     import { useRouterStore } from '@/store/modules/routerStore';
     import { useSettingStore } from '@/store/modules/settingStore';
 

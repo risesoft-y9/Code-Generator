@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2022-01-11 18:38:31
- * @LastEditTime: 2022-04-13 20:56:34
- * @LastEditors: hongzhew
+ * @LastEditTime: 2025-01-15 15:38:59
+ * @LastEditors: chensiwen cikl777@163.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /sz- team-frontend-9.6.x/y9vue-home/src/layouts/components/SiderMenuItem.vue
 -->
@@ -23,7 +23,14 @@
             </el-sub-menu>
         </template>
         <template v-else>
-            <a-link :to="item.path">
+            <!-- 前端框架 -->
+            <div v-if="item.name == 'frontFrameIndex'">
+                <div class="el-menu-item" @click="handleClickFront">
+                    <i v-if="item.meta.icon" :class="['icon', item.meta.icon]" />
+                    {{ $t(`${item.meta.title}`) }}
+                </div>
+            </div>
+            <a-link v-else :to="item.path">
                 <el-menu-item :index="item.path" @click="toggleCollapsedFunc">
                     <!-- <Icon v-if="item.meta.icon" :type="item.meta.icon" class="icon" /> -->
                     <i v-if="item.meta.icon" :class="['icon', item.meta.icon]" />
@@ -46,6 +53,7 @@
         hasChildRoute: (children: RoutesDataItem[]) => boolean;
         toggleCollapsedFunc: () => void;
         fontSizeObj: Object;
+        handleClickFront: () => void;
     }
 
     export default defineComponent({
@@ -78,12 +86,18 @@
             // 注入 字体变量
             const fontSizeObj: any = inject('sizeObjInfo');
 
+            //前端框架跳转
+            const handleClickFront = () => {
+                window.open('https://docs.youshengyun.com/component/frontend/frameDes');
+            };
+
             return {
                 item: routeItem,
                 topMenuPath: topMenuPath,
                 hasChildRoute,
                 toggleCollapsedFunc,
-                fontSizeObj
+                fontSizeObj,
+                handleClickFront
             };
         }
     });
@@ -124,6 +138,14 @@
                 }
             }
         }
+    }
+    div.el-menu-item:hover {
+        background-color: var(--el-color-primary-light-9);
+        color: var(--el-color-primary-light-3);
+    }
+    .icon {
+        margin-right: 15px;
+        font-size: 18px;
     }
 
     .el-menu {
