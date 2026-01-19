@@ -12,8 +12,9 @@
     <artifactId>y9-code-generator</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
+    <name>y9-code-generator</name>
     <description>RiseSoft/CodeGenerator parent pom.xml file</description>
-
+ 
     <licenses>
         <license>
             <name>GNU General Public License (GPL) version 3.0</name>
@@ -64,6 +65,11 @@
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
+                        <configuration>
+                            <excludeArtifacts>
+                                <artifact>risenet-y9boot-server-code</artifact>
+                            </excludeArtifacts>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
