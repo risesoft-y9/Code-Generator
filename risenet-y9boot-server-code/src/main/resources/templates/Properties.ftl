@@ -3,7 +3,11 @@ management:
     endpoints:
         web:
             exposure:
-                include: '*'
+                include: health
+    endpoint:
+        health:
+            probes:
+                enabled: true
 server:
     port: 8080
     servlet:
@@ -169,7 +173,11 @@ management:
     endpoints:
         web:
             exposure:
-                include: '*'
+                include: health
+    endpoint:
+        health:
+            probes:
+                enabled: true
 server:
     port: 8080
     servlet:
