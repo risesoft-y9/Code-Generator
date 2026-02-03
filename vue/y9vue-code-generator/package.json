@@ -1,6 +1,6 @@
 {
     "name": "y9vue-code",
-    "version": "9.6.8",
+    "version": "9.6.9",
     "author": "Fuyu",
     "description": "数字底座-代码生成器",
     "main": "/electron/main.js",

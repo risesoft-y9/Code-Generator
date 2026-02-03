@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>risenet-y9boot-webapp-${codeSystem.name?uncap_first}</artifactId>
@@ -9,7 +9,7 @@
     <parent>
         <groupId>net.risesoft</groupId>
         <artifactId>y9-digitalbase-parent</artifactId>
-        <version>v9.6.9-SNAPSHOT</version>
+        <version>v9.6.9</version>
         <relativePath/>
     </parent>
 
@@ -53,9 +53,9 @@
             <version>${r'${project.version}'}</version>
         </dependency>
 
-         <dependency>
+        <dependency>
             <groupId>net.risesoft</groupId>
-             <artifactId>risenet-y9boot-api-feignclient-platform</artifactId>
+            <artifactId>risenet-y9boot-api-feignclient-platform</artifactId>
             <version>${r'${project.version}'}</version>
         </dependency>
 
