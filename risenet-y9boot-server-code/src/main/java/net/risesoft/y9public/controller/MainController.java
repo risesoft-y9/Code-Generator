@@ -36,7 +36,7 @@ public class MainController {
         String tenantId = Y9LoginUserHolder.getTenantId();
         Map<String, Object> map = new HashMap<>();
         map.put("person", userInfo);
-        map.put("bureau", orgUnitApi.getBureau(tenantId, userInfo.getPersonId()));
+        map.put("bureau", orgUnitApi.getOrgUnitBureau(tenantId, userInfo.getPersonId()));
         return Y9Result.success(map);
     }
 }
