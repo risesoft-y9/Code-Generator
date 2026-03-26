@@ -150,7 +150,7 @@ vue -- 前端工程
 >
 > 演示账号
 >
-> 系统管理员：systemManager@demo 密码：Risesoft@2024
+> 系统管理员：systemManager 密码：Risesoft@2024
 >
 
 ## 文档专区
