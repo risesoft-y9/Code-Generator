@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import net.risesoft.api.platform.org.OrgUnitApi;
 import net.risesoft.log.annotation.RiseLog;
@@ -18,7 +17,6 @@ import net.risesoft.y9.Y9LoginUserHolder;
 
 @RequiredArgsConstructor
 @Controller
-@Slf4j
 @RequestMapping("/vue/rest/main")
 public class MainController {
 

@@ -81,7 +81,7 @@ public class Y9CodeIndexServiceImpl implements Y9CodeIndexService {
         return true;
     }
 
-    public boolean validateFieldIds(String codeEntityId, String indexFields) {
+    private boolean validateFieldIds(String codeEntityId, String indexFields) {
         String[] fieldIds = indexFields.split(",");
         for (String fieldId : fieldIds) {
             Integer isExist = codeFieldRepository.countByCodeEntityIdAndAndId(codeEntityId, fieldId);
