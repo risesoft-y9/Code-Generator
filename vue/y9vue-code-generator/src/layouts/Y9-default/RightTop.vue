@@ -1,9 +1,11 @@
 <script lang="ts" setup>
     import { watch, inject, ref } from 'vue';
-    import RightTopUser from '../components/RightTopUser.vue';
     import { useSettingStore } from '@/store/modules/settingStore';
     import y9_storage from '@/utils/storage';
     import { $y9_SSO } from '@/main'; // 个人信息 —— 头像
+
+    import RightTopUser from '../components/RightTopUser.vue';
+    import UseDark from '../components/UseDark/index.vue';
 
     // 个人信息 —— 头像
     const userInfo = y9_storage.getObjectItem('ssoUserInfo');
@@ -29,14 +31,6 @@
             menuCollapsed: !settingStore.getMenuCollapsed
         });
     };
-
-    // 白天黑夜功能
-    const isDark = useDark({
-        selector: 'html',
-        valueDark: 'theme-dark',
-        valueLight: ''
-    });
-    const toggleDark = useToggle(isDark);
 
     // 锁屏
     const lockScreenFunc = () => {
@@ -104,13 +98,9 @@
                 <el-badge :value="3" class="badge"></el-badge>
                 <i class="ri-notification-line"></i>
             </div> -->
-            <!-- <div class="item isDark">
-                <i class="ri-moon-line" @click="toggleDark" v-if="!isDark"></i>
-                <i class="ri-sun-line" @click="toggleDark" v-else></i>
-            </div> -->
+            <!-- <UseDark /> -->
             <RightTopUser />
             <div class="item user">
-                <!-- 头像测试链接地址：https://www.youshengyun.com/fileManager/files/e6b5d41fd2bd4cdda538139f9b7848c7.jpg -->
                 <el-avatar :src="userInfo.avator ? userInfo.avator : ''">
                     {{ $t(`${userInfo.loginName ?? '访客'}`) }}
                 </el-avatar>

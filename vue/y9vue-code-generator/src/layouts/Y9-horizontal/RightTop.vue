@@ -1,10 +1,12 @@
 <script lang="ts" setup>
     import { watch, inject, ref } from 'vue';
-    import RightTopUser from '../components/RightTopUser.vue';
     import { Edit } from '@element-plus/icons-vue';
     import { useSettingStore } from '@/store/modules/settingStore';
     import y9_storage from '@/utils/storage';
     import { $y9_SSO } from '@/main'; // 个人信息 —— 头像
+
+    import RightTopUser from '../components/RightTopUser.vue';
+    import UseDark from '../components/UseDark/index.vue';
 
     const settingStore = useSettingStore();
     // 注入 字体变量
@@ -12,14 +14,6 @@
     // 全屏功能
     const { isFullscreen, toggle } = useFullscreen();
     const toggleFullScreen = toggle;
-
-    // 白天黑夜功能
-    const isDark = useDark({
-        selector: 'html',
-        valueDark: 'theme-dark',
-        valueLight: ''
-    });
-    const toggleDark = useToggle(isDark);
 
     // 锁屏
     const lockScreenFunc = () => {
@@ -90,10 +84,7 @@
                 <i class="ri-refresh-line"></i>
                 <span>{{ $t('刷新') }}</span>
             </div>
-            <!-- <div class="item isDark">
-                <i class="ri-moon-line" @click="toggleDark" v-if="!isDark"></i>
-                <i class="ri-sun-line" @click="toggleDark" v-else></i>
-            </div> -->
+            <!-- <UseDark /> -->
             <RightTopUser style="z-index: 9999" />
             <div class="item user">
                 <!-- <img src="@/assets/images/app-icon.png"> -->
