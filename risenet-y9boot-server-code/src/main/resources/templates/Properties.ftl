@@ -27,10 +27,10 @@ spring:
             config:
                 enabled: false
                 group: DEFAULT_GROUP
-                namespace: '6c9ebcb4-5ae0-46d0-bc2a-59ecc28b9abf'
-                server-addr: https://dev.youshengyun.com:443
-                username: nacos
-                password: nacos@2022
+                namespace: ${NACOS_NAMESPACE:dev}
+                server-addr: ${NACOS_SERVER_ADDR:https://dev.youshengyun.com:443}
+                username: ${NACOS_USERNAME:nacos}
+                password: password: ${NACOS_PASSWORD:111111}
             discovery:
                 enabled: false
     config:
@@ -197,10 +197,10 @@ spring:
             config:
                 enabled: false
                 group: DEFAULT_GROUP
-                namespace: '6c9ebcb4-5ae0-46d0-bc2a-59ecc28b9abf'
-                server-addr: http://localhost:443
-                username: nacos
-                password: nacos@2022
+                namespace: ${NACOS_NAMESPACE:dev}
+                server-addr: ${NACOS_SERVER_ADDR:http://localhost:8848}
+                username: ${NACOS_USERNAME:nacos}
+                password: password: ${NACOS_PASSWORD:111111}
             discovery:
                 enabled: false
     config:
