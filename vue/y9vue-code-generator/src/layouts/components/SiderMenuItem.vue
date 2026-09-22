@@ -40,67 +40,42 @@
         </template>
     </template>
 </template>
-<script lang="ts">
-    import { defineComponent, PropType, toRefs, computed, Ref, ComputedRef, ref, watch, inject } from 'vue';
+<script lang="ts" setup>
+    import { toRefs, computed, inject } from 'vue';
     import { RoutesDataItem, getRouteBelongTopMenu, hasChildRoute } from '@/utils/routes';
     import { useSettingStore } from '@/store/modules/settingStore';
     import ALink from '@/layouts/components/ALink/index.vue';
     import Icon from './Icon.vue';
 
-    interface SiderMenuItemSetupData {
-        item: Ref;
-        topMenuPath: ComputedRef<string>;
-        hasChildRoute: (children: RoutesDataItem[]) => boolean;
-        toggleCollapsedFunc: () => void;
-        fontSizeObj: Object;
-        handleClickFront: () => void;
-    }
+    defineOptions({ name: 'SiderMenuItem' });
 
-    export default defineComponent({
-        name: 'SiderMenuItem',
-        props: {
-            routeItem: {
-                type: Object as PropType<RoutesDataItem>,
-                required: true
-            },
-            belongTopMenu: {
-                type: String,
-                default: ''
-            }
-        },
-        components: {
-            ALink,
-            Icon
-        },
-        setup(props): SiderMenuItemSetupData {
-            const { routeItem } = toRefs(props);
-            const topMenuPath = computed<string>(() => getRouteBelongTopMenu(routeItem.value as RoutesDataItem));
-
-            const settingStore = useSettingStore();
-            const { toggleCollapsed } = settingStore;
-            const toggleCollapsedFunc = () => {
-                if (settingStore.getDevice === 'mobile') {
-                    toggleCollapsed();
-                }
-            };
-            // 注入 字体变量
-            const fontSizeObj: any = inject('sizeObjInfo');
-
-            //前端框架跳转
-            const handleClickFront = () => {
-                window.open('https://docs.youshengyun.com/component/frontend/frameDes');
-            };
-
-            return {
-                item: routeItem,
-                topMenuPath: topMenuPath,
-                hasChildRoute,
-                toggleCollapsedFunc,
-                fontSizeObj,
-                handleClickFront
-            };
+    const props = withDefaults(
+        defineProps<{
+            routeItem: RoutesDataItem;
+            belongTopMenu?: string;
+        }>(),
+        {
+            belongTopMenu: ''
         }
-    });
+    );
+
+    const { routeItem: item } = toRefs(props);
+    const topMenuPath = computed<string>(() => getRouteBelongTopMenu(item.value as RoutesDataItem));
+
+    const settingStore = useSettingStore();
+    const { toggleCollapsed } = settingStore;
+    const toggleCollapsedFunc = () => {
+        if (settingStore.getDevice === 'mobile') {
+            toggleCollapsed();
+        }
+    };
+    // 注入 字体变量
+    const fontSizeObj: any = inject('sizeObjInfo');
+
+    //前端框架跳转
+    const handleClickFront = () => {
+        window.open('https://docs.youshengyun.com/component/frontend/frameDes');
+    };
 </script>
 
 <style lang="scss" scoped>

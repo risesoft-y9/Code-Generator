@@ -1,11 +1,9 @@
 <script lang="ts" setup>
-    import { watch, inject, ref } from 'vue';
+    import { inject } from 'vue';
     import { useSettingStore } from '@/store/modules/settingStore';
     import y9_storage from '@/utils/storage';
     import { $y9_SSO } from '@/main'; // 个人信息 —— 头像
-
     import RightTopUser from '../components/RightTopUser.vue';
-    import UseDark from '../components/UseDark/index.vue';
 
     // 个人信息 —— 头像
     const userInfo = y9_storage.getObjectItem('ssoUserInfo');

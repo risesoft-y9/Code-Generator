@@ -1,12 +1,9 @@
 <script lang="ts" setup>
-    import { watch, inject, ref } from 'vue';
-    import { Edit } from '@element-plus/icons-vue';
+    import { inject } from 'vue';
     import { useSettingStore } from '@/store/modules/settingStore';
     import y9_storage from '@/utils/storage';
     import { $y9_SSO } from '@/main'; // 个人信息 —— 头像
-
     import RightTopUser from '../components/RightTopUser.vue';
-    import UseDark from '../components/UseDark/index.vue';
 
     const settingStore = useSettingStore();
     // 注入 字体变量
@@ -78,7 +75,7 @@
             </div>
             <!-- <div class="item notify">
                 <el-badge :value="3" class="badge"></el-badge>
-                <i class="ri-notification-line"></i>
+                <i class="ri-notification-line"></i> 
             </div> -->
             <div v-show="settingStore.getRefresh" class="item" @click="refreshFunc">
                 <i class="ri-refresh-line"></i>
@@ -87,7 +84,6 @@
             <!-- <UseDark /> -->
             <RightTopUser style="z-index: 9999" />
             <div class="item user">
-                <!-- <img src="@/assets/images/app-icon.png"> -->
                 <el-avatar :src="userInfo.avator ? userInfo.avator : ''"> {{ userInfo.loginName }}</el-avatar>
             </div>
             <div class="item" @click="logout">

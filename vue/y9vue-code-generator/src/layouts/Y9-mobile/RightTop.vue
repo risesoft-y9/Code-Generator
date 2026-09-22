@@ -1,11 +1,8 @@
 <script lang="ts" setup>
-    import { watch, inject, ref } from 'vue';
-    import { Edit, FullScreen } from '@element-plus/icons-vue';
+    import { inject } from 'vue';
     import { useSettingStore } from '@/store/modules/settingStore';
     import { $y9_SSO } from '@/main'; // 个人信息 —— 头像
-
     import RightTopUser from '../components/RightTopUser.vue';
-    import UseDark from '../components/UseDark/index.vue';
 
     const props = defineProps({
         menuCollapsed: {
@@ -92,9 +89,7 @@
                 <i class="ri-notification-line"></i>
             </div>  -->
             <!-- <UseDark /> -->
-            <div :class="{ item: true, user: true, 'user-mobile': settingStore.getWindowWidth > 425 }">
-                <RightTopUser />
-            </div>
+            <RightTopUser />
             <div class="item" @click="logout">
                 <i class="ri-logout-box-r-line"></i>
                 <span>{{ $t('退出') }}</span>
