@@ -9,7 +9,7 @@
     <parent>
         <groupId>net.risesoft</groupId>
         <artifactId>y9-digitalbase-parent</artifactId>
-        <version>9.6.11</version>
+        <version>9.6.12-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
